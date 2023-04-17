@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="AGAVE" remoteFilesAllowedToDisappearOnAutoupload="false" autoUploadExternalChanges="true">
+    <serverData>
+      <paths name="AGAVE">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/awreed/3d_sas_code_release" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_20k/example_outputs" />
+            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_20k/example_outputs/bp" />
+            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_20k/example_outputs" />
+            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_5k/bp" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
+  </component>
+</project>
