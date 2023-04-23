@@ -67,9 +67,9 @@ def calculate_3d_loss(
     loss_dict = {}
 
     # (3) Calculate 3D error for each exps
-    for expname in expnames:
+    for i, expname in enumerate(expnames):
         normal = None
-        comp_albedo = np.load(comp_albedo_paths[expname])   # load calculated comp_albedo
+        comp_albedo = np.load(comp_albedo_paths[i])   # load calculated comp_albedo
         
         mag = np.abs(comp_albedo).astype(float)
         mag = (mag - mag.min()) / (mag.max() - mag.min())
@@ -117,16 +117,16 @@ def calculate_3d_loss(
 
 if __name__=="__main__":
     bunny_expnames = []
-    comp_albedo_paths = {}
+    comp_albedo_paths = []
     for k in [5, 10, 20]:
         for n in [0, 10, 20]:
             bunny_expnames.append("bunny_%dk_%ddb" % (k, n))
             bunny_expnames.append("bunny_%dk_%ddb_no_network" % (k, n))
             bunny_expnames.append("bunny_%dk/%ddb/das" % (k, n))
 
-            comp_albedo_paths["bunny_%dk_%ddb" % (k, n)] = ""
-            comp_albedo_paths["bunny_%dk_%ddb_no_network" % (k, n)] = ""
-            comp_albedo_paths["bunny_%dk/%ddb/das" % (k, n)] = ""
+            comp_albedo_paths.append("")
+            comp_albedo_paths.append("")
+            comp_albedo_paths.append("")
             
     for thresh in np.arange(.1, .5, .01):
         calculate_3d_loss(

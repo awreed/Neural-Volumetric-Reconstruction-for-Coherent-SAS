@@ -113,6 +113,14 @@ We provide an example for reconstructing the buddha object in `scenes/simulated/
 
 We will point to the code for simulating measurements upon paper acceptance.
 
+## Metric Evaluation and Mesh Visualization
+For metric evaluation, you have to run main files in `evaluate` folder.
+1) Run `main_mesh_recon_and_3d_space_loss.py`. This will reconstruct 3d mesh from learned model and also calculate 3d space loss (chamfer, iou).
+2) Then, run `main_render.py` to render reconstructed mesh.
+3) Finally run `main_image_space_loss.py` to calculate image space loss (lpips, psnr, mse...).
+
+Example configurations are provided in `predefined_configs.py`, but some arguments are not given, so please set the correct file inputs depends on your experiment setting.
+
 ## Reconstructing Using Your Own Data
 
 Running your own data requires creating a dictionary object that adheres to the schema defined by 
