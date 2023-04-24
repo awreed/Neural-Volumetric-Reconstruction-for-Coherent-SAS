@@ -17,9 +17,15 @@ header {
   background-color: #333;
   color: #fff;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   padding: 20px;
+  text-align: center;
+}
+
+.title-authors {
+  width: 100%;
+  max-width: 800px;
   text-align: center;
 }
 
@@ -43,7 +49,7 @@ section {
 }
 
 section h2 {
-  margin-top: 40px;
+  margin-top: 0;
   font-size: 24px;
 }
 
