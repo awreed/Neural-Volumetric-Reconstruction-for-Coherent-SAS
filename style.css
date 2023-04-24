@@ -85,11 +85,10 @@ footer p {
 }
 
 .authors p {
-  margin: 5px;
+  margin: 15px;
   text-align: center;
   font-size: 8px;
 }
-
 
 .authors .psu {
   display: block;
