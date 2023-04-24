@@ -108,8 +108,8 @@ footer p {
 
 .icons-row h2 img {
   width: 100px;
-  height: 100px;
-  /*margin: 0 40px;*/
+  height: auto;
+  margin: 40px 0;
   text-align: center;
 }
 
