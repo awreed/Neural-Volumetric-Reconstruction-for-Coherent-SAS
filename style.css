@@ -100,13 +100,9 @@ footer p {
   align-items: center;
 }
 
-.icons-row h2 {
-  margin: 0 20px;
-  text-align: center;
-}
-
-.icons-row img {
+.icons-row h2 img {
   width: 100px;
   height: auto;
-  margin: 0 10px;
+  margin: 0 20px;
+  text-align: center;
 }
