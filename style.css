@@ -17,7 +17,7 @@ header {
   background-color: #333;
   color: #fff;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 20px;
 }
@@ -25,32 +25,6 @@ header {
 header h1 {
   margin: 0;
   font-size: 32px;
-}
-
-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-nav ul li {
-  display: inline-block;
-  margin-right: 20px;
-}
-
-nav ul li:last-child {
-  margin-right: 0;
-}
-
-nav ul li a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.2s ease-in-out;
-}
-
-nav ul li a:hover {
-  color: #f1c40f;
 }
 
 /* Style the main section */
@@ -64,6 +38,7 @@ main {
 
 section {
   margin-bottom: 20px;
+  text-align: center;
 }
 
 section h2 {
