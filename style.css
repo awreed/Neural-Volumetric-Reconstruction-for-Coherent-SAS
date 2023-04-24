@@ -89,3 +89,8 @@ footer p {
   text-align: center;
   font-size: 8px;
 }
+
+
+.authors .psu {
+  display: block;
+}
