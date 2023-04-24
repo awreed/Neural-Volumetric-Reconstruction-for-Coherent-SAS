@@ -108,16 +108,12 @@ footer p {
 
 .icons-row h2 img {
   width: 100px;
-  height: auto;
-  margin: 40px 0;
+  height: 100px;
+  margin: 0px 40px;
   text-align: center;
 }
 
 .icons-row h2 a {
-  font-size: 18px;
+  font-size: 14px;
 }
 
-.icons-row #supplemental h2 a:after {
-  content: "\A";
-  white-space: pre;
-}
