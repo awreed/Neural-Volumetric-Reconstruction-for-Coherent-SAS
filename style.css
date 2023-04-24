@@ -1,19 +1,30 @@
-body {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+/* Reset styles for all elements */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+/* Set a default font size and line height */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Style the header section */
 header {
   background-color: #333;
   color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 20px;
 }
 
 header h1 {
   margin: 0;
+  font-size: 32px;
 }
 
 nav ul {
@@ -34,11 +45,21 @@ nav ul li:last-child {
 nav ul li a {
   color: #fff;
   text-decoration: none;
+  font-weight: bold;
+  transition: color 0.2s ease-in-out;
 }
 
+nav ul li a:hover {
+  color: #f1c40f;
+}
+
+/* Style the main section */
 main {
-  margin: 20px auto;
+  margin: 40px auto;
   max-width: 800px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 section {
@@ -47,7 +68,30 @@ section {
 
 section h2 {
   margin-top: 0;
+  font-size: 24px;
 }
 
+section p {
+  text-align: justify;
+}
+
+section a {
+  color: #3498db;
+}
+
+section a:hover {
+  color: #2980b9;
+}
+
+/* Style the footer section */
 footer {
   background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
+}
+
+footer p {
+  margin: 0;
+  font-size: 14px;
+}
