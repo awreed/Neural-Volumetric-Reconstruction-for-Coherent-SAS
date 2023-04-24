@@ -70,3 +70,13 @@ footer p {
   margin: 0;
   font-size: 14px;
 }
+
+.authors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.authors p {
+  margin: 0 1em;
+}
