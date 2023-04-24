@@ -1,0 +1,19 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 2em;
+  text-align: center;
+}
+
+p {
+  text-align: justify;
+  margin: 0 auto;
+  max-width: 600px;
+  padding: 0 20px;
+}
