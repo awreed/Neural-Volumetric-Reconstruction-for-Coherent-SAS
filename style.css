@@ -74,9 +74,9 @@ footer p {
 .authors {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-top: 20px;
 }
 
 .authors p {
-  margin: 0 1em;
+  margin: 0 20px;
 }
