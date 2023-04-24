@@ -93,3 +93,20 @@ footer p {
 .authors .psu {
   display: block;
 }
+
+.icons-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icons-row h2 {
+  margin: 0 20px;
+  text-align: center;
+}
+
+.icons-row img {
+  width: 100px;
+  height: auto;
+  margin: 0 10px;
+}
