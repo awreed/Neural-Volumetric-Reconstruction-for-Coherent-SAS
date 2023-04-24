@@ -20,6 +20,7 @@ header {
   justify-content: center;
   align-items: center;
   padding: 20px;
+  text-align: center;
 }
 
 header h1 {
@@ -73,10 +74,11 @@ footer p {
 
 .authors {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  margin-top: 20px;
 }
 
 .authors p {
-  margin: 0 20px;
+  margin: 5px;
+  text-align: center;
 }
