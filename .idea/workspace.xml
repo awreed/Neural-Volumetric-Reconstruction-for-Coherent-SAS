@@ -24,7 +24,6 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "true",
     "last_opened_file_path": "C:/Users/Albert/Neural-Volume-Reconstruction-for-Coherent-SAS",
     "node.js.detected.package.eslint": "true",
@@ -49,6 +48,7 @@
       <option name="presentableId" value="Default" />
       <updated>1682354269586</updated>
       <workItem from="1682354270543" duration="12686000" />
+      <workItem from="1682517677793" duration="2183000" />
     </task>
     <servers />
   </component>
