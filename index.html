@@ -66,7 +66,7 @@
 
       <section id="results">
         <h2>Results</h2>
-        <p>We validate our method on two real data sources and in simulation.</p>
+        <p>We validate our method on two real data sources, AirSAS and the Search Volume Sediment Sonar (SVSS), and in simulation.</p>
         <h4><strong><i>AirSAS</i></strong></h4>
         <p>Our first real-data source is an in-air sonar called AirSAS. AirSAS is a speaker and microphone directed at a turntable.
           The speaker and microphone are mounted to a linear track to enable cylindrical and helical collection geometries.</p>
@@ -95,6 +95,40 @@
               </video>
           </div>
 	    </div>
+        <h4><strong><i>Search Volume Sediment Sonar (SVSS)</i></strong></h4>
+        <p>SVSS uses a sonar transducer array mounted to a pontoon boat to search for objects in a lakebed.</p>
+        <img src="./svss-hardware.png" width="600" height="330">
+        <div class="svss_videos" style="display:flex;flex-direction:row;">
+          <div>
+              <h3>Cinder block cores up</h3>
+              <video width="300" height="200" autoplay loop muted>
+                  <source src="./bp_cinder_cores.mp4" type="video/mp4">
+              </video>
+              <video width="300" height="200" autoplay loop muted>
+                  <source src="./nbp_cinder_cores.mp4" type="video/mp4">
+              </video>
+          </div>
+          <div>
+              <h3>Cinder block face up</h3>
+              <video width="300" height="200" autoplay loop muted>
+                  <source src="./bp_cinder_face.mp4" type="video/mp4">
+              </video>
+              <video width="300" height="200" autoplay loop muted>
+                  <source src="./nbp_cinder_face.mp4" type="video/mp4">
+              </video>
+          </div>
+          <div>
+              <h3>Pipe</h3>
+              <video width="300" height="200" autoplay loop muted>
+                  <source src="./bp_pipe.mp4" type="video/mp4">
+              </video>
+              <video width="300" height="200" autoplay loop muted>
+                  <source src="./nbp_pipe.mp4" type="video/mp4">
+              </video>
+          </div>
+	    </div>
+        <p>The top row shows backprojection reconstructions and the bottom row shows ours. Our pulse
+          deconvolution and neural backprojection steps enable us to reconstruct sharper target features and mitigate the blobby features of backprojection.</p>
       </section>
 
         <!--<video width="600" height="400" autoplay controls>
