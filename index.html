@@ -67,7 +67,7 @@
       <section id="results">
         <h2>Results</h2>
         <p>We validate our method in simulation and on two real data sources, AirSAS and the Search Volume Sediment Sonar (SVSS)</p>
-          <h4><strong><i>Simulation Results</i></strong></h4>
+          <h3><strong><i>Simulation Results</i></strong></h3>
           <p>We simulate sonar measurements using a time-of-flight renderer modified from Kim et al. (2021). In particular, we use the renderer to obtain the transient
           impulse response of a scene and convolve the transient with the sonar pulse to obtain sonar measurements. </p>
           <p><br> <span style="display:inline-block; width: 50px;"></span><strong>Backprojection</strong> <span style="display:inline-block; width: 50px;"></span>
@@ -76,13 +76,11 @@
             <source src="./simulation-video.mp4" type="video/mp4">
           </video>
           <p>We compare our method to backprojection, gradient descent, and the polar formatting algorithm (PFA not shown here). Backprojection is the traditional method for reconstruction and gradient descent
-          is our method without using a neural network to predict the scene. We compute metrics across many simulated scenes to characterize the performance gap:</p>
-          <img src="./table.png" width="525" height="140">
-
-          <p>Our simulation results show our method achieving superior quantitative and qualitative reconstructions.</p>
+          is our method without using a neural network to predict the scene.</p> <img src="./table.png" width="525" height="140">
+             <p> We compute metrics across many simulated scenes to characterize the performance gap.</p>
 
 
-        <h4><strong><i>Real Results 1: AirSAS</i></strong></h4>
+        <h3><strong><i>Real Results 1: AirSAS</i></strong></h3>
         <p>AirSAS is a speaker and microphone directed at a turntable.
           The speaker and microphone are mounted to a linear track to enable cylindrical and helical collection geometries.</p>
         <div class="airsas_hardware" style="display:flex;flex-direction:row;">
@@ -110,7 +108,7 @@
               </video>
           </div>
 	    </div>
-        <h4><strong><i>Real Results 2: Search Volume Sediment Sonar (SVSS)</i></strong></h4>
+        <h3><strong><i>Real Results 2: Search Volume Sediment Sonar (SVSS)</i></strong></h3>
         <p>SVSS uses a sonar transducer array mounted to a pontoon boat to search for objects in a lakebed.</p>
         <img src="./svss-hardware.png" width="600" height="330">
         <div class="svss_videos" style="display:flex;flex-direction:row;">
