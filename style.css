@@ -7,8 +7,8 @@
 
 /* Set a default font size and line height */
 body {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
+  font-family: Times New Roman, sans-serif;
+  font-size: 18px;
   line-height: 1.5;
 }
 
@@ -27,6 +27,11 @@ header {
   width: 100%;
   max-width: 800px;
   text-align: center;
+}
+
+.title-authors h2 {
+  text-align: center;
+  font-size: 18px;
 }
 
 header h1 {
@@ -115,5 +120,24 @@ footer p {
 
 .icons-row h2 a {
   font-size: 13px;
+}
+
+.results h2 {
+  text-align: center
+}
+
+.results h3 {
+  text-align: center;
+  font-size: 6px;
+}
+
+.airsas_videos h3{
+  text-align: center;
+  font-size: 12px;
+}
+
+.airsas_videos video {
+  text-align: center;
+  width: 400px;
 }
 

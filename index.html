@@ -11,6 +11,7 @@
     <header>
       <div class="title-authors">
         <h1>Neural Volume Reconstruction for Coherent Synthetic Aperture Sonar</h1>
+        <h2> SIGGRAPH 2023</h2>
         <div class="authors">
           <p>Albert Reed<br>albertnm123@gmail.com<br>Arizona State University</p>
           <p>Juhyeon Kim<br>juhyeon.kim.gr@dartmouth.edu<br>Dartmouth College</p>
@@ -39,11 +40,54 @@
       </section>
 
       <section id="method">
-        <h2>Method and Results</h2>
+        <h2>5 Minute Video Overview</h2>
         <video width="600" height="400" controls>
-          <source src="/Neural-Volume-Reconstruction-for-Coherent-SAS/movie.mp4" type="video/mp4">
+          <source src="movie.mp4" type="video/mp4">
         </video>
       </section>
+
+      <section id="methods">
+        <h2>Method</h2>
+        <p>SAS reconstruction typically uses backprojection where measurements are coherently combined onto the scene using
+          the time-of-flight between the sonar and scene. Instead, we propose an analysis-by-synthesis optimization for reconstruction,
+          enabling us to incorporate physics-based knowledge and prior information into image formation. Our pipeline adapts techniques from volume rendering
+          and neural fields to create a general SAS reconstruction method that outperforms backprojection.</p><br>
+
+        <img src="/Neural-Volume-Reconstruction-for-Coherent-SAS/proposed-pipeline.png" width="700" height="325">
+
+        <p>In particular, we propose:<br><br>
+          (1) <strong>Pulse deconvolution</strong>: An analysis-by-synthesis method for deconvolving the transmitted pulse from measurements and increasing our system bandwidth computationally.<br>
+          (2) <strong>Neural backprojection</strong>: A general SAS reconstruction method formulated as an analysis-by-synthesis optimization. Neural backprojection
+          uses a neural network to estimate the scene and designs a forward model that considers Lambertian scattering, occlusion, and the coherent integration of acoustic waves to render measurements.
+        </p>
+
+      </section>
+
+
+      <section id="results">
+        <h2>Results</h2>
+        <p>We validate our method on an in-air system called AirSAS, an in-water sonar called the search volume sediment sonar (SVSS) and in simulation.
+        Here, we show some results of an armadillo reconstructed using AirSAS.</p>
+        <div class="airsas_videos" style="display:flex;flex-direction:row;">
+
+		<div>
+			<h3>Backprojection (Traditional)</h3>
+			<video width="320" height="240" autoplay loop muted>
+				<source src="/Neural-Volume-Reconstruction-for-Coherent-SAS/arma_bp.mp4" type="video/mp4">
+			</video>
+		</div>
+		<div>
+			<h3>Neural Backprojection (Proposed)</h3>
+			<video width="320" height="240" autoplay loop muted>
+				<source src="/Neural-Volume-Reconstruction-for-Coherent-SAS/arma_nbp.mp4" type="video/mp4">
+			</video>
+		</div>
+	    </div>
+      </section>
+
+        <!--<video width="600" height="400" autoplay controls>
+          <source src="arma_bp.mp4" type="video/mp4">
+        </video>/Neural-Volume-Reconstruction-for-Coherent-SAS/-->
 
 
       <!--<section id="results">
