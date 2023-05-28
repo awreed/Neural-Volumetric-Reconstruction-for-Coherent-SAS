@@ -121,6 +121,8 @@ For metric evaluation, you have to run main files in `evaluate` folder.
 
 Example configurations are provided in `predefined_configs.py`, but some arguments are not given, so please set the correct file inputs depends on your experiment setting.
 
+We also provide example configurations as `.sh` files, so please check it.
+
 ## Reconstructing Using Your Own Data
 
 Running your own data requires creating a dictionary object that adheres to the schema defined by 

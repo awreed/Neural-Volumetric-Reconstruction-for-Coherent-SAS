@@ -7,12 +7,15 @@ from torchmetrics import StructuralSimilarityIndexMeasure
 from torchmetrics import PeakSignalNoiseRatio
 
 import pandas as pd
+import argparse
 
 from evaluate.predefined_configs import *
 device = 'cuda'
+import argparse
+
 
 # Calculate averaged image space error (default : 10 azimuths)
-def calculate_image_space_error_averaged(mesh_name, expnames, lpips_loss_fn, target_image="voxel", target_type=None, max_index=10, csv_file_name=None, **kwargs):
+def calculate_image_space_error_averaged(mesh_name, expnames, thresh, lpips_loss_fn, target_image="voxel", target_type=None, max_index=10, csv_file_name=None, **kwargs):
     image_dir = kwargs.get('image_dir')
     gt_image_dir = kwargs.get('gt_image_dir')
 
@@ -76,15 +79,23 @@ def calculate_image_space_error_averaged(mesh_name, expnames, lpips_loss_fn, tar
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Image space loss evaluation")
+    
+    parser.add_argument('--n_azimuth', type=int, default=10, help="Number of azimuth")
+    parser.add_argument('--mesh_name', required=True, help="Mesh name")
+    parser.add_argument('--expname', required=True, help="Expname")
+    parser.add_argument('--image_dir', required=True, help="Image directory")
+    parser.add_argument('--gt_image_dir', required=True, help="GT Image directory")
+    parser.add_argument('--thresh', type=float, default=0.2, help="Threshold for reconstructed inr")
+
+    args = parser.parse_args()
+
     lpips_loss_fn_vgg = lpips.LPIPS(net='vgg').to(device)
 
     expnames_total = get_expnames()
 
-    for thresh in np.arange(.1, .5, .01):
-        azimuth_number = 10
-        for mesh_name, expnames in expnames_total.items():
-            calculate_image_space_error_averaged(mesh_name, expnames, thresh, lpips_loss_fn_vgg, 
-            target_image="mesh", target_type="depth", max_index=azimuth_number, csv_file_name="%s_pfa" % n,
-            image_dir="",
-            gt_image_dir=""
-            )
+    calculate_image_space_error_averaged(args.mesh_name, args.expname, args.thresh, lpips_loss_fn_vgg, 
+        target_image="mesh", target_type="depth", max_index=args.n_azimuth,
+        image_dir=args.image_dir,
+        gt_image_dir=args.gt_image_dir
+        )
