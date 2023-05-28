@@ -129,6 +129,9 @@ Running your own data requires creating a dictionary object that adheres to the 
 `SASDataSchema` class shown in `data_schemas.py`. Then, you can use `pulse_deconvolve.sh` and `neural_backproject.sh`
 scripts to deconvolve and reconstruct measurements. More details will be available upon paper acceptance.
 
+
+To generate your own transient signal from rendering, please refer [here](https://github.com/juhyeonkim95/MitsubaPyOptiXTransient).
+
 ## Visualizations
 
 AirSAS results in the paper were rendered with matlab. The `matlab/` directory contains helper scripts. Use `convert_npy_to_mat.py` to convert a `*.npy` file to `*.mat` file. Pass this mat file to the `generate_figures_tiles.m` to render. Line 57-58 contain the view angle. We use theta_vector=230 for armadillo renderings, and theta_vector=180 for bunny renderings. The color can be changed using the `Colormap=` argument on line 38. We use `colormap_blue` for the armadillo and `colormap_red` for the bunny.
