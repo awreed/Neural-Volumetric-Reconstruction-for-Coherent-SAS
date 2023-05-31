@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python evaluate/main_render.py \
+python main_render.py \
   --n_azimuth 10 \
   --mesh_name buddha \
   --expname buddha_20k_20db \

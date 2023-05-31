@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python evaluate/main_image_space_loss.py \
+python main_image_space_loss.py \
   --n_azimuth 10 \
   --mesh_name buddha \
   --expname buddha_20k_20db \
