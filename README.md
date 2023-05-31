@@ -113,15 +113,29 @@ We provide an example for reconstructing the buddha object in `scenes/simulated/
 
 We will point to the code for simulating measurements upon paper acceptance.
 
-## Metric Evaluation and Mesh Visualization
+### Metric Evaluation and Mesh Visualization
 For metric evaluation, you have to run main files in `evaluate` folder.
-1) Run `main_mesh_recon_and_3d_space_loss.py`. This will reconstruct 3d mesh from learned model and also calculate 3d space loss (chamfer, iou).
-2) Then, run `main_render.py` to render reconstructed mesh.
-3) Finally run `main_image_space_loss.py` to calculate image space loss (lpips, psnr, mse...).
+1) First, generate ground truth point cloud on surface or volume by running `main_generate_gt_point_cloud.sh`.
+2) Run `main_mesh_recon_and_3d_space_loss.sh`. This will reconstruct 3d mesh from learned model and also calculate following 3d space loss.
 
-Example configurations are provided in `predefined_configs.py`, but some arguments are not given, so please set the correct file inputs depends on your experiment setting.
+- Surface Chamfer Distance : Chamfer distance based on surface point cloud.
+- Volume Chamfer Distance : Chamfer distance based on volume point cloud.
+- IoU : Intersection over union using between two voxels built from point cloud.
 
-We also provide example configurations as `.sh` files, so please check it.
+Here, point cloud is generated in two ways, directly from INR voxels (comp_albedo), or from reconstructed 3D mesh.
+
+3) Then, run `main_render.sh` to render reconstructed mesh. This will render radiance and depth image using reconstructed mesh, at different camera azimuths.
+4) Finally run `main_image_space_loss.sh` to calculate image space loss (lpips, psnr, mse...) on color image or depth image.
+
+Example configurations are provided in `.sh` files, but please make sure to set it corresponding to your enviroment.
+
+Here is the example rendered mesh of reconstructed buddha using our method:
+![.](./evaluate/example_images/buddha_rendered_images_v1.0.png)
+We also attach the example of each matric in `example_metrics` folder.
+<!-- In the main paper, we use IoU from INR voxels and surface Chamfer distance from reconstructed 3D mesh in the main paper. -->
+
+<!-- Example configurations are provided in `predefined_configs.py`, but some arguments are not given, so please set the correct file inputs depends on your experiment setting. -->
+<!-- We also provide example configurations as `.sh` files, so please check it. -->
 
 ## Reconstructing Using Your Own Data
 
