@@ -116,13 +116,14 @@ We will point to the code for simulating measurements upon paper acceptance.
 ### Metric Evaluation and Mesh Visualization
 For metric evaluation, you have to run main files in `evaluate` folder.
 1) First, generate ground truth point cloud on surface or volume by running `main_generate_gt_point_cloud.sh`.
-2) Run `main_mesh_recon_and_3d_space_loss.sh`. This will reconstruct 3d mesh from learned model and also calculate following 3d space loss.
+2) Run `main_mesh_recon_and_3d_space_loss.sh`. This will reconstruct 3d mesh from learned model and also calculate following 3d space loss from given point cloud.
+Here, point cloud is generated in two ways, directly from INR voxels (comp_albedo), or from reconstructed 3D mesh. 
 
 - Surface Chamfer Distance : Chamfer distance based on surface point cloud.
 - Volume Chamfer Distance : Chamfer distance based on volume point cloud.
 - IoU : Intersection over union using between two voxels built from point cloud.
 
-Here, point cloud is generated in two ways, directly from INR voxels (comp_albedo), or from reconstructed 3D mesh.
+
 
 3) Then, run `main_render.sh` to render reconstructed mesh. This will render radiance and depth image using reconstructed mesh, at different camera azimuths.
 4) Finally run `main_image_space_loss.sh` to calculate image space loss (lpips, psnr, mse...) on color image or depth image.
