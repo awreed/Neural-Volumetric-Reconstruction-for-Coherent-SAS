@@ -16,8 +16,8 @@ def get_expnames_pfa():
     armadilo_expnames = []
     armadilo_expnames.append("armadilo_20k_pfa")
 
-    budda_expnames = []
-    budda_expnames.append("budda_20k_pfa")
+    buddha_expnames = []
+    buddha_expnames.append("buddha_20k_pfa")
     
     lucy_expnames = []
     lucy_expnames.append("lucy_20k_pfa")
@@ -32,7 +32,7 @@ def get_expnames_pfa():
     expnames_total_dict["lucy"] = lucy_expnames
     expnames_total_dict["dragon"] = dragon_expnames
     expnames_total_dict["xyz_dragon"] = xyz_dragon_expnames
-    expnames_total_dict["budda"] = budda_expnames
+    expnames_total_dict["buddha"] = buddha_expnames
     expnames_total_dict["cube"] = cube_expnames
     expnames_total_dict["cylinder"] = cylinder_expnames
     expnames_total_dict["bunny"] = bunny_expnames
@@ -58,10 +58,10 @@ def get_expnames():
             armadilo_expnames.append("armadilo_%dk_%sdb_no_network" % (k, n))
             armadilo_expnames.append("armadilo_%dk_%sdb_das" % (k, n))
 
-    budda_expnames = []
-    budda_expnames.append("budda_20k_20db")
-    budda_expnames.append("budda_20k_20db_no_network")
-    budda_expnames.append("budda_20k_20db_das")
+    buddha_expnames = []
+    buddha_expnames.append("buddha_20k_20db")
+    buddha_expnames.append("buddha_20k_20db_no_network")
+    buddha_expnames.append("buddha_20k_20db_das")
     
     lucy_expnames = []
     lucy_expnames.append("lucy_20k_20db")
@@ -95,7 +95,7 @@ def get_expnames():
     expnames_total_dict["cube"] = cube_expnames
     expnames_total_dict["cylinder"] = cylinder_expnames
     expnames_total_dict["xyz_dragon"] = xyz_dragon_expnames
-    expnames_total_dict["budda"] = budda_expnames
+    expnames_total_dict["buddha"] = buddha_expnames
     
     return expnames_total_dict
 
