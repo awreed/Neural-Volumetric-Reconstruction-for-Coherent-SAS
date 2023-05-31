@@ -124,8 +124,7 @@ Here, point cloud is generated in two ways, directly from INR voxels (comp_albed
 - IoU : Intersection over union using between two voxels built from point cloud.
 
 
-
-3) Then, run `main_render.sh` to render reconstructed mesh. This will render radiance and depth image using reconstructed mesh, at different camera azimuths.
+3) Then, run `main_render.sh` to render reconstructed mesh. This will render color, normal and depth image using reconstructed mesh, at different camera azimuths.
 4) Finally run `main_image_space_loss.sh` to calculate image space loss (lpips, psnr, mse...) on color image or depth image.
 
 Example configurations are provided in `.sh` files, but please make sure to set it corresponding to your enviroment.
