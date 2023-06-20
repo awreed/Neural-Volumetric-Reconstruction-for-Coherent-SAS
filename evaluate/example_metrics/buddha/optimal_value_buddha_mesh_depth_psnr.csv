@@ -1,0 +1,4 @@
+expname,optimal value,optimal thresh
+buddha_20k_20db,19.38324737548828,0.26
+buddha_20k_20db_no_network,16.30097770690918,0.1
+buddha_20k_20db_das,17.034622192382812,0.26

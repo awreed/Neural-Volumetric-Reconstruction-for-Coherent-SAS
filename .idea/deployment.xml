@@ -5,14 +5,8 @@
       <paths name="AGAVE">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/awreed/3d_sas_code_release" local="$PROJECT_DIR$" web="/" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
-          <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_20k/example_outputs" />
-            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_20k/example_outputs/bp" />
-            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_20k/example_outputs" />
-            <excludedPath local="true" path="$PROJECT_DIR$/scenes/airsas/bunny_5k/bp" />
-          </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
