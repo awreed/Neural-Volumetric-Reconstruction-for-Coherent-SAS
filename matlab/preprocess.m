@@ -12,6 +12,7 @@ function x = preprocess(x, thresh_in, rate_in)
         rate = 1;
     end
 
+    disp('orig size')
     [x_orig, y_orig, z_orig] = size(x);
 
     [x_down, y_down, z_down] = ...

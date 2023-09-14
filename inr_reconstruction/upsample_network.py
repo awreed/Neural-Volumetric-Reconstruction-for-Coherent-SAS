@@ -46,13 +46,14 @@ def point_cloud_to_mesh_marching_cube(points, output_dir, **kwargs):
 
 if __name__ == '__main__':
 
-    experiment_dir_agave = '/home/awreed/SINR3D/experiments/figure_11/scenes/real_armadillo_20k'
-    exp = "figure_11_real_armadillo_incoherent"
+    #experiment_dir_agave = '/home/awreed/SINR3D/experiments/figure_11/scenes/real_armadillo_20k'
+    experiment_dir_agave = '/home/awreed/neural-vol-sas/scenes/airsas/arma_20k'
+    exp = "arma_20k_release_2"
 
     #scene_inr_config = os.path.join(experiment_dir_agave, 'scene_inr_config.json')
-    scene_inr_config = '/home/awreed/SINR3D/experiments/figure_12/scenes/bunny_20k/scene_inr_config.json'
-    model_path = os.path.join(experiment_dir_agave, 'invert_inr', exp)
-    ckpt_path = os.path.join(experiment_dir_agave, 'invert_inr', exp, 'models', '020000.tar')
+    scene_inr_config = '/home/awreed/neural-vol-sas/scenes/airsas/arma_20k/nbp_config.json'
+    model_path = os.path.join(experiment_dir_agave, 'npb_output', exp)
+    ckpt_path = os.path.join(experiment_dir_agave, 'npb_output', exp, 'models', '025000.tar')
     dev = 'cuda:0'
     num_layers = 4
     num_neurons = 128
@@ -74,6 +75,8 @@ if __name__ == '__main__':
     num_y = 150*sf
     num_z = 120*sf
 
+    print(num_x, num_y, num_z)
+
     voxels = create_voxels(x_min=x_min,
                            x_max=x_max,
                            y_min=y_min,
@@ -85,6 +88,7 @@ if __name__ == '__main__':
                            num_z=num_z)
 
     all_scene_coords = torch.from_numpy(voxels[c.VOXELS])
+
     print("All scene coords shape", all_scene_coords.shape)
     if normalize_scene_dims:
         scene_scale_factor = 1 / (4 * all_scene_coords.abs().max())
@@ -127,6 +131,15 @@ if __name__ == '__main__':
     if compute_normals:
         print("Normals shape", normal.shape)
 
-    np.save(os.path.join(experiment_dir_agave, 'invert_inr',
+    comp_albedo = np.reshape(comp_albedo, (num_x, num_y, num_z))
+
+    np.save(os.path.join(experiment_dir_agave, 'npb_output',
                          exp, c.NUMPY, 'upsample_comp_albedo.npy'), comp_albedo)
+
+    data = {
+        'scene': scene,
+    }
+
+    scipy.io.savemat(os.path.join(experiment_dir_agave, 'npb_output',
+                         exp, c.NUMPY, 'upsample_comp_albedo.mat'), data)
 

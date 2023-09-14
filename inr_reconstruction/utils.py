@@ -1,6 +1,59 @@
 import torch
 import numpy as np
 import math
+import matplotlib.pyplot as plt
+import os
+
+
+def save_3d_matplotlib_scene(scene, output_dir, output_name, elev=2, num_angles=4, thresh=2, downsample_factor=None):
+
+    angles = np.linspace(0, 360, num_angles)
+    mag = np.abs(scene)
+
+    if downsample_factor is not None:
+        df = math.floor(downsample_factor)
+
+        mag = mag[::df, ::df, ::df]
+
+    num_x, num_y, num_z = mag.shape
+    mag = mag.ravel()
+
+    u = mag.mean()
+    var = mag.std()
+    thresh = u + thresh*var
+
+    mag[mag[:] < thresh] = None
+
+    x = np.linspace(-1, 1, num_x)
+    y = np.linspace(-1, 1, num_y)
+    z = np.linspace(-1, 1, num_z)
+    voxels = np.stack(np.meshgrid(x, y, z, indexing='ij'))
+    voxels = np.transpose(voxels, (1, 2, 3, 0))
+    voxels = np.reshape(voxels, (-1, 3))
+
+    for i, angle in enumerate(angles):
+        print("Saving plot " + str(i) + '/' + str(len(angles)-1))
+
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        ax.clear()
+
+        im = ax.scatter(voxels[:, 0],
+               voxels[:, 1],
+               voxels[:, 2],
+               c=mag, alpha=0.5)
+        ax.set_xlim3d(-1, 1)
+        ax.set_ylim3d(-1, 1)
+        ax.set_zlim3d(-1, 1)
+
+        ax.view_init(elev, angle, 0)
+
+        plt.grid(True)
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        fig.colorbar(im)
+        plt.savefig(os.path.join(output_dir, output_name + '_view_' + str(i) + '.png'))
 
 def normalize(x):
     return (x - x.min()) / (x.max() - x.min())

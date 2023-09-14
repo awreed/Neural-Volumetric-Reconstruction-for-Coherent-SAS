@@ -10,6 +10,7 @@ import numpy as np
 import pickle
 from utils import resample_cylindrical
 import torch
+import scipy
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Reconstruct AirSAS data")
@@ -162,6 +163,13 @@ if __name__ == '__main__':
     scene = scene.reshape((int(NUM_Y), int(NUM_X), int(NUM_Z)))
 
     np.save(os.path.join(args.output_dir, c.BF_FILE), scene)
+
+    data = {
+        'scene': scene,
+    }
+
+
+    scipy.io.savemat(os.path.join(args.output_dir, c.BF_FILE.split('.')[0] + '.mat'), data)
 
     for slice in [0]:
         # hello

@@ -252,6 +252,13 @@ if __name__ == '__main__':
 
         np.save(os.path.join(args.output_dir, c.NUMPY, c.BF_FILE), scene)
 
+        #data = {
+        #    'scene': scene,
+        #}
+
+        #scipy.io.savemat(os.path.join(output_dir, os.path.join(args.output_dir, c.BF_FILE.split('.')[0] + '.mat')),
+        #                 data)
+
     try:
         scene = scene.reshape((args.num_y, args.num_x, args.num_z))
     except ValueError:

@@ -157,9 +157,7 @@ if __name__ == '__main__':
         if args.compare_with_mf:
             mf_wfms = mf_wfms - np.mean(mf_wfms, axis=1, keepdims=True)
 
-    print("Wfms before padding", gt_wfms.shape)
     gt_wfms = torch.nn.functional.pad(gt_wfms, (args.zero_padding, args.zero_padding))
-    print("Wfms after padding", gt_wfms.shape)
 
     # Define sampling distances
     num_radial = None
@@ -297,8 +295,8 @@ if __name__ == '__main__':
                 optimizer = torch.optim.Adam(list(model.parameters()), lr=args.learning_rate)
 
             # [num trans, num_radial, 2]
-            samples = torch.stack(torch.meshgrid(dists_norm, torch.linspace(0, 1, len(trans_batch)).
-                                                 to(dev))).permute(2, 1, 0)
+            samples = torch.stack(torch.meshgrid(dists_norm, torch.linspace(0, 1, len(trans_batch)).to(dev),
+                                                 indexing='ij')).permute(2, 1, 0)
             ts = []
             for epoch in range(1, args.number_iterations):
                 #a = time.time()

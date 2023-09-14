@@ -2,8 +2,8 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="a4a453bf-d2cf-45d8-820a-1c1f80f9bdee" name="AGAVE">
-        <fileTransfer accessType="SFTP" host="agave.asu.edu" port="22" sshConfigId="f32f4fe1-27e1-40b7-a795-1f074bd8929b" sshConfig="awreed@agave.asu.edu:22 password">
+      <webServer id="fa531917-80eb-4db8-ab34-65e8fb5121b1" name="SOL">
+        <fileTransfer accessType="SFTP" host="login.sol.rc.asu.edu" port="22" sshConfigId="c839557b-43cd-46a3-aeda-aab7f19288f7" sshConfig="awreed@login.sol.rc.asu.edu:22 password">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

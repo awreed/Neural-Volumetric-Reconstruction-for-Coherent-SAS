@@ -33,7 +33,7 @@ class SceneSampler:
 
             x = torch.linspace(-self.max_radius, self.max_radius, steps=steps)
             y = torch.linspace(-self.max_radius, self.max_radius, steps=steps)
-            focal_plane = torch.stack(torch.meshgrid((x, y))).permute(1, 2, 0)
+            focal_plane = torch.stack(torch.meshgrid((x, y), indexing='ij')).permute(1, 2, 0)
             focal_plane = torch.cat((focal_plane, torch.ones(focal_plane.shape[0],
                                                              focal_plane.shape[1], 1) * self.max_distance), dim=-1)
             vectors = focal_plane.reshape(-1, 3)
@@ -56,7 +56,7 @@ class SceneSampler:
 
             x = torch.linspace(-self.max_radius, self.max_radius, steps=steps)
             y = torch.linspace(-self.max_radius, self.max_radius, steps=steps)
-            focal_plane = torch.stack(torch.meshgrid((x, y))).permute(1, 2, 0)
+            focal_plane = torch.stack(torch.meshgrid((x, y), indexing='ij')).permute(1, 2, 0)
             focal_plane = torch.cat((focal_plane, torch.ones(focal_plane.shape[0],
                                                              focal_plane.shape[1], 1) * self.max_distance), dim=-1)
             vectors = focal_plane.reshape(-1, 3)
@@ -122,7 +122,7 @@ class SceneSampler:
 
         x = torch.linspace(-self.max_radius, self.max_radius , steps=steps)
         y = torch.linspace(-self.max_radius, self.max_radius , steps=steps)
-        focal_plane = torch.stack(torch.meshgrid((x, y))).permute(1, 2, 0)
+        focal_plane = torch.stack(torch.meshgrid((x, y), indexing='ij')).permute(1, 2, 0)
         focal_plane = torch.cat((focal_plane, torch.ones(focal_plane.shape[0],
                                                          focal_plane.shape[1], 1) * self.max_distance), dim=-1)
         vectors = focal_plane.reshape(-1, 3)

@@ -2,7 +2,7 @@
 
 python ../../../inr_reconstruction/deconvolve_measurements.py \
   --inr_config ./pulse_deconvolve.json \
-  --system_data /data/sjayasur/awreed/system_data_arma_20k.pik \
+  --system_data /home/awreed/airsas_data/system_data_files/system_data_arma_20k.pik \
   --clear_output_dir \
   --output_dir ./deconvolved_measurements \
   --learning_rate 1e-3 \

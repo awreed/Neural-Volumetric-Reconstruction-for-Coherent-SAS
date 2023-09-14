@@ -1,6 +1,12 @@
 import pyqtgraph as pg
+
 from pyqtgraph.Qt import QtCore, QtGui
+from PyQt6.QtWidgets import QApplication
+
+#from PyQt5 import QApplication
 from pyqtgraph import ColorMap
+
+
 import pyqtgraph.opengl as gl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -154,7 +160,11 @@ if __name__ == '__main__':
     if args.imag:
         assert not args.real
 
-    app = QtGui.QApplication([])
+    ##app = QtWidgets.QApplication([])
+
+    #app = QtGui.QApplication([])
+    app = QApplication([])
+    #app = Application([])
     w = gl.GLViewWidget()
     w.setCameraPosition(distance=args.distance, elevation=args.elevation, azimuth=args.azimuth)
     w.show()

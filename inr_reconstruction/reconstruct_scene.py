@@ -194,9 +194,10 @@ if __name__ == '__main__':
 
         # Older das.sh code puts in different directory, so check:
         if len(weight_paths) == 0:
-            weight_paths = glob.glob(os.path.join(args.fit_folder, c.WEIGHT_PREFIX + '*'))
+            weight_paths = glob.glob(os.path.join(args.fit_folder, c.NUMPY, c.WEIGHT_PREFIX + '*'))
 
-        assert len(weight_paths) > 0, "Failed to load weights"
+        assert len(weight_paths) > 0, "Failed to load weights from " + \
+                                      os.path.join(args.fit_folder, c.NUMPY, c.WEIGHT_PREFIX + '*')
 
         wfm_crop_settings = system_data[c.WFM_CROP_SETTINGS]
         # Sort weight paths so they align with tx indeces

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig authType="PASSWORD" host="agave.asu.edu" id="f32f4fe1-27e1-40b7-a795-1f074bd8929b" port="22" nameFormat="DESCRIPTIVE" username="awreed" useOpenSSHConfig="true" />
+      <sshConfig authType="PASSWORD" host="login.sol.rc.asu.edu" id="c839557b-43cd-46a3-aeda-aab7f19288f7" port="22" nameFormat="DESCRIPTIVE" username="awreed" useOpenSSHConfig="true" />
     </configs>
   </component>
 </project>

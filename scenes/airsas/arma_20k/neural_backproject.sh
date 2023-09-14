@@ -3,7 +3,7 @@
 python ../../../inr_reconstruction/reconstruct_scene.py \
   --scene_inr_config ./nbp_config.json \
   --fit_folder ./deconvolved_measurements \
-  --system_data /data/sjayasur/awreed/system_data_arma_20k.pik \
+  --system_data /home/awreed/airsas_data/system_data_files/system_data_arma_20k.pik \
   --output_dir ./npb_output \
   --plot_thresh 2. \
   --learning_rate 1e-4 \
@@ -29,7 +29,7 @@ python ../../../inr_reconstruction/reconstruct_scene.py \
   --point_at_center \
   --transmit_from_tx \
   --normalize_scene_dims \
-  --expname arma_20k_release_2 \
+  --expname arma_20k \
   --beamwidth 30 \
   --phase_loss 1e-1 \
   #--no_reload \
