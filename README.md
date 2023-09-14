@@ -243,7 +243,7 @@ to predict the scene. If you wish to run this baseline, add the `--no_network` f
 
 # Sediment Volume Search Sonar (SVSS) Reconstructions
 
-### (Imaging Lyceum Only) Download the Data
+### Download the Data
 In accordance with funding agency guidelines: request access to the SVSS dataset by first
 contacting `Albert W. Reeed at awreed@asu.edu`.
 
