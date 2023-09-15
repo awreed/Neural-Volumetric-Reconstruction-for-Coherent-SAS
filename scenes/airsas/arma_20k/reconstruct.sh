@@ -63,4 +63,7 @@ python ../../../inr_reconstruction/upsample_network_with_input_args.py \
   --experiment_dir ./ `# experiment directory` \
   --inr_config ./nbp_config.json `# json file containing network configuration` \
   --output_scene_file_name final_upsampled_scene \
-  --output_dir_name reconstructed_scenes
+  --output_dir_name reconstructed_scenes \
+  --system_data $1 \
+  --normalize_scene_dims \
+  --sf 2

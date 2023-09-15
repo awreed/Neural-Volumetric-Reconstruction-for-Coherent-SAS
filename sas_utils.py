@@ -322,16 +322,11 @@ def crop_wfm_beamwidth(tx_coords, rx_coords, tx_vec, rx_vec, tx_bw, rx_bw, voxel
             min_val = tot_dist.ravel().min()
             max_val = tot_dist.ravel().max()
 
-            print(min_val, max_val)
-
             all_dists_min.append(min_val)
             all_dists_max.append(max_val)
 
         count = count + 1
 
-    print("After")
-    print(len(all_dists_min))
-    print(len(all_dists_max))
 
     # Crop the waveforms based off of these distances
     all_dists_min = np.array(all_dists_min)
@@ -429,7 +424,6 @@ def no_rc_kernel_from_waveform(wfm, num_samples):
     sig[:wfm.shape[0]] = wfm
     sig = torch.from_numpy(sig)
     if wfm.dtype == complex:
-        print("Not taking hilbert")
         kernel = torch.fft.fft(sig)
         # kernel = torch.fft.fft(hilbert_torch(sig))
     else:

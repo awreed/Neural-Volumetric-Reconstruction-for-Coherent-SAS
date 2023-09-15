@@ -120,6 +120,7 @@ if __name__ == '__main__':
     speed_of_sound = system_data[c.SOUND_SPEED]
 
     if not tx_coords.shape[0] % args.num_trans_per_inr == 0:
+        print("Num_trans_per_inr", args.num_trans_per_inr, "Number of tx", tx_coords.shape[0])
         warnings.warn("num_trans_per_inr should ideally be divisible into number of tx. If it's not, the remainder" + \
                       "of the waveforms may be sampled differently.")
 

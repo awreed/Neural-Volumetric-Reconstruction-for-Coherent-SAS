@@ -165,7 +165,7 @@ Successfully running the above will generate a new directory `reconstructed_scen
 ## Rendering the Results
 
 ### Using Python's Matplotlib (not recommended)
-If we don't want to use Matlab, we can obtain quick and dirty visualizations using Matplotlib.
+If we don't want to use Matlab, we can obtain quick (but poor) visualizations using Matplotlib.
 
 Rendering the backprojection result (from the `./scenes/airsas/arma_20k` directory):
 ```
@@ -178,6 +178,12 @@ python ../../../inr_reconstruction/matplotlib_render_cmd_line.py --scene_npy_fil
 ```
 
 The rendered images will be in  `scenes/airsas/arma_20k/reconstructed_scenes`.
+
+(left: backproject, right ours). See the Matlab section below for a better way to render the results. 
+<p align="center">
+  <img src="./scenes/airsas/arma_20k/reconstructed_scenes/bp_mpl_view_2.png" width="200" />
+  <img src="./scenes/airsas/arma_20k/reconstructed_scenes/nbp_mpl_view_2.png" width="200" /> 
+</p>
 
 ### Using Matlab (recommended)
 
@@ -200,15 +206,17 @@ Parameters:
     threshold:  filter scene according to abs(scene) < threshold = 0
     upsample_factor: scaling factor for trilinearly upsampling the scene 
     colormap_option: 0 for red, 1 for blue
+    theta_in: rotation
+    z: elevatation parameter
 ```
 
 Render the backprojection result from a matlab terminal using
 ```
-volume_render_scene('../scenes/airsas/arma_20k/reconstructed_scenes/backprojected_scene.mat', '../scenes/airsas/arma_20k/reconstructed_scenes', 'bp', 0.2, 2, 0)
+volume_render_scene('../scenes/airsas/arma_20k/reconstructed_scenes/backprojected_scene.mat', '../scenes/airsas/arma_20k/reconstructed_scenes', 'bp', 0.2, 2, 0, 230, 0.5)
 ```
 and our method with
 ```
-volume_render_scene('../scenes/airsas/arma_20k/reconstructed_scenes/final_upsampled_scene.mat', '../scenes/airsas/arma_20k/reconstructed_scenes', 'ours', 0.2, 1, 0)
+volume_render_scene('../scenes/airsas/arma_20k/reconstructed_scenes/final_upsampled_scene.mat', '../scenes/airsas/arma_20k/reconstructed_scenes', 'ours', 0.2, 1, 0, 230, 0.5)
 ```
 
 <p align="center">
@@ -246,6 +254,60 @@ to predict the scene. If you wish to run this baseline, add the `--no_network` f
 ### Download the Data
 In accordance with funding agency guidelines: request access to the SVSS dataset by first
 contacting `Albert W. Reeed at awreed@asu.edu`.
+
+Create a `system_data.pik` file for the svss cylinder scene:
+
+```
+cd ./scenes/svss/cylinder
+chmod +x create_system_data.sh
+./create_system_data <path/to/downloaded_data> ./system_data
+```
+
+This will output a `system_data.pik` file as well as backprojected imagery to a new directory named `./system_data`.
+
+Deconvolving the waveforms:
+
+```
+chmod +x pulse_deconvolve.sh
+./pulse_deconvolve ./system_data/system_data.pik ./deconvolved_measurements
+```
+The first argument is the `system_data.pik` we generated in the previous step, and `./deconvolved_measurements` 
+is the output directory.
+
+Reconstruct the scene:
+
+```
+chmod +x neural_backproject.sh
+./neural_backproject.sh ./system_data/system_data.pik ./deconvolved_measurements ./nbp_output svss_cylinder_exp_1
+```
+
+The follwiong command will generate `.mat` file of the final scene in the local directory `./reconstructed_scenes`.
+
+```
+python ../../../inr_reconstruction/upsample_network_with_input_args.py \
+    --system_data ./system_data/system_data.pik \
+    --exp_name svss_cylinder_exp_1 \
+    --experiment_dir ./ \
+    --inr_config ./nbp_config.json \
+    --output_scene_file_name final_scene \
+    --output_dir_name reconstructed_scenes \
+    --model_path ./nbp_output/svss_cylinder_exp_1/models/004000.tar \
+    --sf 2 \
+    --flip_z \
+    --permute_xy
+```
+
+Render the scene with matlab. 
+
+```
+volume_render_scene('../scenes/svss/cylinder/reconstructed_scenes/final_scene.mat', '../scenes/svss/cylinder/reconstructed_scenes', 'ours', 0.2, 1, 2, 180, .4)
+```
+
+This is a rendering of the cylindrical target hovering above the seafloor. It appears to be hovering since the sonar only
+captures returns from the top of the cylinder.
+<p align="center">
+  <img src="./scenes/svss/cylinder/reconstructed_scenes/ours.png" width="200" />
+</p>
 
 
 # Simulated Reconstructions

@@ -10,6 +10,7 @@ import mcubes
 import numpy as np
 import argparse
 import scipy
+import pickle
 
 def lerp(x, a, b):
     return (b - a) * x + a
@@ -61,6 +62,23 @@ def config_parser():
                              'renderer')
     parser.add_argument('--output_dir_name', required=True,
                         help='Name of output directory')
+    parser.add_argument('--no_factor_4', required=False, action='store_true')
+    parser.add_argument('--model_path', required=False, default=None,
+                        help="Pass in a particular model")
+    parser.add_argument('--num_layers', required=False, type=int, default=4,
+                        help="Number of layers in neural network model")
+    parser.add_argument('--num_neurons', required=False, type=int, default=128,
+                        help="Number of layers in neural network model")
+    parser.add_argument('--system_data', required=True,
+                        help="system_data.pik file")
+    parser.add_argument('--sf', required=False, type=int, default=1,
+                        help='Scale scene by this factor')
+    parser.add_argument('--normalize_scene_dims', required=False, default=False, action='store_true',
+                        help="normalize scene dimensions (Check if this was done for neural_backproject.sh)")
+    parser.add_argument('--flip_z', required=False, default=False, action='store_true',
+                        help="Whether to flip z dimension (check if this was done for neural_backprojection.sh")
+    parser.add_argument('--permute_xy', required=False, default=False, action='store_true',
+                        help="Flip xy axis. Should be used for the SVSS data")
     return parser
 
 if __name__ == '__main__':
@@ -68,54 +86,57 @@ if __name__ == '__main__':
     parser = config_parser()
     args = parser.parse_args()
 
-    #experiment_dir_agave = '/home/awreed/SINR3D/experiments/figure_11/scenes/real_armadillo_20k'
-    #experiment_dir_agave = '/home/awreed/neural-vol-sas/scenes/airsas/arma_20k'
+    with open(args.system_data, 'rb') as handle:
+        system_data = pickle.load(handle)
+
     experiment_dir_agave = args.experiment_dir
-    #exp = "arma_20k_release_2"
     exp = args.exp_name
 
-    #scene_inr_config = '/home/awreed/neural-vol-sas/scenes/airsas/arma_20k/nbp_config.json'
     scene_inr_config = os.path.join(experiment_dir_agave, args.inr_config)
 
-    model_path = os.path.join(experiment_dir_agave, 'nbp_output', exp)
+    if args.model_path is None:
+        #model_path = os.path.join(experiment_dir_agave, 'nbp_output', exp)
+        model_paths = os.path.join(experiment_dir_agave, 'nbp_output', exp, 'models')
+        model_names = [os.path.join(model_paths, f) for f in sorted(os.listdir(model_paths)) if 'tar' in f]
 
-    #model_path = os.path.join(basedir, 'models')
+        ckpt_path = None
 
-    model_paths = os.path.join(experiment_dir_agave, 'nbp_output', exp, 'models')
-    model_names = [os.path.join(model_paths, f) for f in sorted(os.listdir(model_paths)) if 'tar' in f]
-
-    ckpt_path = None
-
-    if len(model_names) < 0:
-        raise OSError("Did not find any saved models in " + model_paths)
+        if len(model_names) < 0:
+            raise OSError("Did not find any saved models in " + model_paths)
+        else:
+            ckpt_path = model_names[-1]
+            print("Using model path:", ckpt_path)
     else:
-        ckpt_path = model_names[-1]
-        print("Using model path:", ckpt_path)
+        ckpt_path = args.model_path
 
-    assert ckpt_path is not None, "Failed to load any model checkpoints"
+    assert ckpt_path is not None, "Failed to load any model checkpoints. You can pass one in using the --model_path input arg."
 
     dev = 'cuda:0'
-    num_layers = 4
-    num_neurons = 128
+    num_layers = args.num_layers
+    num_neurons = args.num_neurons
     scene_voxels = None
     incoherent = False
     real_only = False
-    normalize_scene_dims = True
+    normalize_scene_dims = args.normalize_scene_dims
     compute_normals=False
     max_voxels = 1500000
 
-    x_min=-0.125
-    x_max=0.125
-    y_min=-0.125
-    y_max=0.125
-    z_min=0.0
-    z_max=0.2
-    sf = 2
-    num_x = 150*sf
-    num_y = 150*sf
-    num_z = 120*sf
+    x_min=system_data[c.GEOMETRY][c.CORNERS][:, 0].min()
+    x_max=system_data[c.GEOMETRY][c.CORNERS][:, 0].max()
+    y_min=system_data[c.GEOMETRY][c.CORNERS][:, 1].min()
+    y_max=system_data[c.GEOMETRY][c.CORNERS][:, 1].max()
+    z_min=system_data[c.GEOMETRY][c.CORNERS][:, 2].min()
+    z_max=system_data[c.GEOMETRY][c.CORNERS][:, 2].max()
+    sf = args.sf
+
+    num_x = system_data[c.GEOMETRY][c.NUM_X]*sf
+    num_y = system_data[c.GEOMETRY][c.NUM_Y]*sf
+    num_z = system_data[c.GEOMETRY][c.NUM_Z]*sf
 
     print("Upsampled scene dimensions", num_x, num_y, num_z)
+
+    #voxels = system_data[c.GEOMETRY][c.VOXELS]
+    #all_scene_coords = torch.from_numpy(voxels)
 
     voxels = create_voxels(x_min=x_min,
                            x_max=x_max,
@@ -125,9 +146,15 @@ if __name__ == '__main__':
                            z_max=z_max,
                            num_x=num_x,
                            num_y=num_y,
-                           num_z=num_z)
+                           num_z=num_z,
+                           permute_xy=args.permute_xy)
 
     all_scene_coords = torch.from_numpy(voxels[c.VOXELS])
+
+    if args.no_factor_4:
+        scene_scale_factor = 1 / (all_scene_coords.abs().max())
+    else:
+        scene_scale_factor = 1 / (4 * all_scene_coords.abs().max())
 
     if normalize_scene_dims:
         scene_scale_factor = 1 / (4 * all_scene_coords.abs().max())
@@ -140,6 +167,7 @@ if __name__ == '__main__':
                           dev=dev,
                           num_layers=num_layers,
                           num_neurons=num_neurons)
+
 
     ckpt = torch.load(ckpt_path)
 
@@ -171,6 +199,12 @@ if __name__ == '__main__':
         print("Normals shape", normal.shape)
 
     comp_albedo = np.reshape(comp_albedo, (num_x, num_y, num_z))
+
+    if args.flip_z:
+        print("Flipped z")
+        comp_albedo = np.flip(comp_albedo, -1)
+    else:
+        print("Did not flip z")
 
     output_dir = os.path.join(experiment_dir_agave, args.output_dir_name)
 

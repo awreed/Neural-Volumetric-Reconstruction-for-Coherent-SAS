@@ -12,16 +12,20 @@ function x = preprocess(x, thresh_in, rate_in)
         rate = 1;
     end
 
-    disp('orig size')
-    [x_orig, y_orig, z_orig] = size(x);
+    %disp('orig size')
+    %[x_orig, y_orig, z_orig] = size(x);
 
-    [x_down, y_down, z_down] = ...
-        meshgrid(0:1:x_orig-1, 0:1:y_orig-1, 0:1:z_orig-1);
+    %[x_down, y_down, z_down] = ...
+    %    meshgrid(0:1:x_orig-1, 0:1:y_orig-1, 0:1:z_orig-1);
 
-    [x_up, y_up, z_up] = ...
-        meshgrid(0:1/rate:x_orig-1, 0:1/rate:y_orig-1, 0:1/rate:z_orig-1);
+    %[x_up, y_up, z_up] = ...
+    %    meshgrid(0:1/rate:x_orig-1, 0:1/rate:y_orig-1, 0:1/rate:z_orig-1);
 
-    x = interp3(x_down, y_down, z_down, x, x_up, y_up, z_up);
+    %x = permute(x, [2, 1, 3]);
+
+    %x = interp3(x_down, y_down, z_down, x, x_up, y_up, z_up);
+
+    %x = permute(x, [2, 1, 3]);
     
     min_x = min(x, [], 'all');
     max_x = max(x, [], 'all');

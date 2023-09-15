@@ -135,6 +135,12 @@ if __name__ == '__main__':
         voxel_size_avg = torch.mean(torch.tensor([voxel_size_x, voxel_size_y, voxel_size_z]))
         voxel_size_avg = torch.sqrt(voxel_size_avg**2 + voxel_size_avg**2)
 
+        #print(all_scene_coords.shape)
+        #print(all_scene_coords[:, 0].min(), all_scene_coords[:, 0].max())
+        #print(all_scene_coords[:, 1].min(), all_scene_coords[:, 1].max())
+        #print(all_scene_coords[:, 2].min(), all_scene_coords[:, 2].max())
+        #exit(0)
+
         scene_voxels=None
         if args.no_network:
             assert args.normalize_scene_dims is True

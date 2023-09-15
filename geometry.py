@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import os
 from data_schemas import Geometry
 
-def create_voxels(x_min, x_max, y_min, y_max, z_min, z_max, num_x, num_y, num_z):
+def create_voxels(x_min, x_max, y_min, y_max, z_min, z_max, num_x, num_y, num_z, permute_xy=False):
     scene_corners = np.array(([x_min, y_min, z_min],
                               [x_min, y_max, z_min],
                               [x_min, y_max, z_max],
@@ -22,7 +22,10 @@ def create_voxels(x_min, x_max, y_min, y_max, z_min, z_max, num_x, num_y, num_z)
     y_dim = np.abs(y_max - y_min)
     z_dim = np.abs(z_max - z_min)
 
-    (x, y, z) = np.meshgrid(x_vect, y_vect, z_vect)
+    if permute_xy:
+        (x, y, z) = np.meshgrid(y_vect, x_vect, z_vect)
+    else:
+        (x, y, z) = np.meshgrid(x_vect, y_vect, z_vect)
 
     voxels = np.hstack((np.reshape(x, (np.size(x), 1)),
                         np.reshape(y, (np.size(y), 1)),

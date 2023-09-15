@@ -30,7 +30,7 @@ if __name__ == '__main__':
                                                                                         "their max. ")
     parser.add_argument('--save3D', action='store_true', default=False, help="Whether to store 3D plots")
     parser.add_argument('--bf_op', default=None, required=True, help="set to 'airsas' (without the '') for beamformer "
-                                                      "to ignore beamwidth and 'serdp' to account for it")
+                                                      "to ignore beamwidth and 'svss' to account for it")
     parser.add_argument('--x_then_y', required=False, default=False, action='store_true',
                         help="Whether to reshape scene as Y, X, Z (False) or X, Y, Z (True)")
     parser.add_argument('--depth_slices', required=False, default=False, action='store_true',
