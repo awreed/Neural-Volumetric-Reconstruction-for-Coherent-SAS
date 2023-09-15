@@ -253,8 +253,10 @@ to predict the scene. If you wish to run this baseline, add the `--no_network` f
 
 ### Download the Data
 In accordance with funding agency guidelines: request access to the SVSS dataset by first
-contacting `Albert W. Reeed at awreed@asu.edu`.
+contacting `Albert W. Reed at awreed@asu.edu`.
 
+
+### Example: Reconstructing the Cylindrical Target
 Create a `system_data.pik` file for the svss cylinder scene:
 
 ```
@@ -281,7 +283,7 @@ chmod +x neural_backproject.sh
 ./neural_backproject.sh ./system_data/system_data.pik ./deconvolved_measurements ./nbp_output svss_cylinder_exp_1
 ```
 
-The follwiong command will generate `.mat` file of the final scene in the local directory `./reconstructed_scenes`.
+The following command will generate `.mat` file of the final scene in the local directory `./reconstructed_scenes`.
 
 ```
 python ../../../inr_reconstruction/upsample_network_with_input_args.py \
