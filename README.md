@@ -271,7 +271,7 @@ contacting `Albert W. Reed at awreed@asu.edu`.
 
 
 ### Example: Reconstructing the Cylindrical Target
-We will walk through an examplle of reconstructing the cylindrical target. The other SVSS scenes will follow the same steps.
+We will walk through an example of reconstructing the cylindrical target. The other SVSS scenes will follow the same steps.
 Create a `system_data.pik` file for the svss cylinder scene:
 
 ```
@@ -328,6 +328,10 @@ captures returns from the top of the cylinder.
 
 
 # Simulated Reconstructions
+
+Download the folder containing the transient measurements and system_data.pik file from here:
+
+https://drive.google.com/drive/folders/1bWUpcjJhro5m035W98DHDBYv13PGidRF?usp=share_link
 
 The folder contains a `system_data.pik` file. Download this file as it will be needed for running the 
 simulation data.
