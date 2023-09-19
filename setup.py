@@ -4,5 +4,5 @@ setup(name='neural-volume-sas',
       version='1.0',
       install_requires=['commentjson', 'scipy', 'tqdm', 'matplotlib',
                         'pyqtgraph', 'PyQt6', 'PyOpenGL', 'opencv-python-headless', 'PyMCubes',
-                        'tensorboard', 'PyQt5', 'h5py', 'bs4'],
+                        'tensorboard', 'PyQt5', 'h5py', 'bs4', 'gdown'],
       packages=find_packages())

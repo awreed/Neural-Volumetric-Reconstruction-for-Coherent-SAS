@@ -64,7 +64,14 @@ with numpy/pytorch. This data structure is called a `system_data.pik` file, whic
 is a [pickled](https://docs.python.org/3/library/pickle.html) python [dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries). At a high level, each scene has its own `system_data.pik` file (see **Download the Data** below) 
 which contains everything needed for reconstruction: the measurements, scene geometry, and other metadata (e.g., sound speed). 
 
-[Download and unzip the airsas measurements from the bunny and armadillo.](https://drive.google.com/file/d/1mzJx_tesC3XDtUcnjrUvn11N2z8NuXEv/view?usp=sharing)
+Download the airsas measurements for the bunny and armadillo:
+```
+gdown https://drive.google.com/uc?id=1mzJx_tesC3XDtUcnjrUvn11N2z8NuXE
+```
+Unzip them using unzip or 7z:
+```
+unzip airsas_raw_data.zip
+```
 
 The unzipped data has the file structure
 
@@ -128,8 +135,15 @@ We can skip the next step (**Download the data**) since we created the pickle fi
 
 ## Download the data
 
-[Download the data and unzip the data](https://drive.google.com/file/d/18yMVWS3ZxEgillaqs6aQXBnhgDcRD19c/view?usp=share_link) 
- to obtain: (1) `system_data_bunny_20k.pik`; (2) `system_data_bunny_5k.pik`; (3)`system_data_arma_20k.pik`;
+Download the data:
+```
+gdown https://drive.google.com/uc?id=18yMVWS3ZxEgillaqs6aQXBnhgDcRD19c
+```
+Unzip the data:
+```
+unzip system_data_files.zip
+```
+to obtain: (1) `system_data_bunny_20k.pik`; (2) `system_data_bunny_5k.pik`; (3)`system_data_arma_20k.pik`;
 (4) `system_data_arma_5k.pik`. 
 
 Each pickle files contain the data used to generate `Figure 12` in the paper. The pickle files are named according to the scene (i.e., bunny or armadillo) and 
