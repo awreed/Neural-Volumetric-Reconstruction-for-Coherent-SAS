@@ -271,6 +271,7 @@ contacting `Albert W. Reed at awreed@asu.edu`.
 
 
 ### Example: Reconstructing the Cylindrical Target
+We will walk through an examplle of reconstructing the cylindrical target. The other SVSS scenes will follow the same steps.
 Create a `system_data.pik` file for the svss cylinder scene:
 
 ```

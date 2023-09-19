@@ -1,0 +1,34 @@
+#!/bin/bash
+
+python ../../../inr_reconstruction/reconstruct_scene.py \
+  --scene_inr_config ./nbp_config.json \
+  --fit_folder $2 \
+  --system_data $1 \
+  --output_dir $3 \
+  --plot_thresh 2. \
+  --learning_rate 1e-4 \
+  --num_epochs 15000 \
+  --num_rays 10000 \
+  --info_every 25 \
+  --scene_every 1000 \
+  --accum_grad 5 \
+  --scale_factor 1e1 \
+  --max_weights 200 \
+  --sampling_distribution_uniformity 1.0 \
+  --lambertian_ratio 0. \
+  --occlusion \
+  --occlusion_scale 5e3 \
+  --num_layers 4 \
+  --num_neurons 128 \
+  --reg_start 250 \
+  --flip_z \
+  --bw_units r \
+  --x_then_y \
+  --depth_plots \
+  --sparsity 0.0 \
+  --expname $4 \
+  --no_reload \
+  --export_model_every 500 \
+  --transmit_from_tx \
+  --ray_trace_return \
+  --no_factor_4 \
