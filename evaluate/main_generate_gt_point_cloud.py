@@ -5,9 +5,12 @@ import argparse
 
 def export_gt_point_cloud(args):
     # Load G.T mesh
-    gt_mesh = trimesh.load(args.mesh_file+".obj", force='mesh')
+    gt_mesh = trimesh.load(args.mesh_file, force='mesh')
+    print("sampling mesh... this may take a while")
+    print("Surface sampling")
     gt_points, gt_faces = gt_mesh.sample(args.gt_n_points, return_index=True)
     gt_normals = gt_mesh.face_normals[gt_faces]
+    print("Volume sampling")
     gt_points_volume = trimesh.sample.volume_mesh(gt_mesh, args.gt_n_points_volume)
 
     np.save(args.mesh_file+"_surface_%d" % args.gt_n_points, gt_points)

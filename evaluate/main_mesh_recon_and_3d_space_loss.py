@@ -40,7 +40,7 @@ def calculate_chamfer_distance(gt_points_surface, gt_points_volume, points, pref
     return loss
 
 
-def calculate_3d_loss(args)
+def calculate_3d_loss(args):
     # (1) Load G.T mesh
     # gt_mesh_dir = "../airsas_data/gt_meshes"
     gt_points_surface = np.load("%s/%s_surface.npy" % (args.gt_mesh_dir, args.mesh_name))
@@ -61,7 +61,7 @@ def calculate_3d_loss(args)
     # (3) Calculate 3D error for each exps
     
     normal = None
-    comp_albedo = np.load(args.comp_albedo_paths)   # load calculated comp_albedo
+    comp_albedo = np.load(args.comp_albedo_path)   # load calculated comp_albedo
     
     mag = np.abs(comp_albedo).astype(float)
     mag = (mag - mag.min()) / (mag.max() - mag.min())
@@ -75,13 +75,10 @@ def calculate_3d_loss(args)
     if not os.path.exists(mesh_output_dir_exp):
         os.makedirs(mesh_output_dir_exp)
 
-    if not os.path.exists(os.path.join(mesh_output_dir_exp, "mesh.obj")):
-        # export point cloud to mesh using marching cube (mesh / smoothed mesh) -> we will use smoothe mesh only.
-        point_cloud_to_mesh_marching_cube(condition, mesh_output_dir_exp)
-        mesh_to_point_cloud(os.path.join(mesh_output_dir_exp, "mesh"), mesh_output_dir_exp)
-        mesh_to_point_cloud(os.path.join(mesh_output_dir_exp, "mesh_smooth"), mesh_output_dir_exp)
-    else:
-        print("Mesh info alreay exists!")
+    # export point cloud to mesh using marching cube (mesh / smoothed mesh) -> we will use smoothe mesh only.
+    point_cloud_to_mesh_marching_cube(condition, mesh_output_dir_exp)
+    mesh_to_point_cloud(os.path.join(mesh_output_dir_exp, "mesh"), mesh_output_dir_exp)
+    mesh_to_point_cloud(os.path.join(mesh_output_dir_exp, "mesh_smooth"), mesh_output_dir_exp)
 
     mesh_points = np.load(os.path.join(mesh_output_dir_exp, "mesh_smooth_surface.npy"))
     mesh_normals = np.load(os.path.join(mesh_output_dir_exp, "mesh_smooth_surface_normal.npy"))
@@ -91,8 +88,8 @@ def calculate_3d_loss(args)
     # A. From point cloud from inferred point using comp albedo
     # B. From point cloud from reconstructed mesh
 
-    cham_loss = calculate_chamfer_distance(gt_points_surface, gt_normals_surface, gt_points_volume, inferred_points, inferred_normals)
-    cham_loss_mesh = calculate_chamfer_distance(gt_points_surface, gt_normals_surface, gt_points_volume, mesh_points, mesh_normals, prefix="mesh_")
+    cham_loss = calculate_chamfer_distance(gt_points_surface, gt_points_volume, inferred_points)
+    cham_loss_mesh = calculate_chamfer_distance(gt_points_surface, gt_points_volume, mesh_points, prefix="mesh_")
     iou_loss = calculate_voxel_iou(gt_voxels, inferred_points)
     iou_loss_mesh = calculate_voxel_iou(gt_voxels, mesh_points, prefix="mesh_")
     
@@ -109,7 +106,7 @@ def calculate_3d_loss(args)
 
 if __name__=="__main__":
     parser = argparse.ArgumentParser(description="Export 3D point cloud, mesh and 3D loss")
-    parser.add_argument('--scene_inr_result_directory', required=True, help="Result folder for inr")
+    #parser.add_argument('--scene_inr_result_directory', required=True, help="Result folder for inr")
     parser.add_argument('--output_dir', required=True, help="Output directory")
     parser.add_argument('--system_data_path', required=True, help="System data path")
     

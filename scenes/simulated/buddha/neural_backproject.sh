@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python /home/awreed/SINR3D/inr_reconstruction/reconstruct_scene.py \
+python ../../../inr_reconstruction/reconstruct_scene.py \
   --scene_inr_config ./nbp_config.json \
   --fit_folder ./deconvolved_measurements \
   --system_data ./system_data_20db.pik \
@@ -27,10 +27,10 @@ python /home/awreed/SINR3D/inr_reconstruction/reconstruct_scene.py \
   --smooth_delta 1.0 \
   --sparsity 1e0 \
   --thresh .02 \
-  --expname sim_buddha_20db_20k \
+  --expname sim_buddha_20db_20k_1 \
   --normalize_scene_dims \
   --no_reload \
-  --importance_sampling_rays 500
+  #--importance_sampling_rays 500 \
   #--beamwidth 30 \
   #--smooth_loss 1e3 \
   #--importance_sampling_rays 500 \

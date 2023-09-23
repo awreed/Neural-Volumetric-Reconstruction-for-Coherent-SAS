@@ -329,53 +329,111 @@ captures returns from the top of the cylinder.
 
 # Simulated Reconstructions
 
-Download the folder containing the transient measurements and system_data.pik file from here:
+Download the folder containing the transient measurements and system_data.pik file. 
+Note this command will download approx. 100 gb of data. It may be preferrable to download a single scene by directly opening the
+google drive link below and downloading data for a single scene. 
+
+```
+gdown https://drive.google.com/drive/folders/1bWUpcjJhro5m035W98DHDBYv13PGidRF -O ./simulated_data --folder
+```
 
 https://drive.google.com/drive/folders/1bWUpcjJhro5m035W98DHDBYv13PGidRF?usp=share_link
 
-The folder contains a `system_data.pik` file. Download this file as it will be needed for running the 
-simulation data.
+The folder contains data for 6 simulated scenes: bunny, xyz_dragon, lucy, dragon, buddha, and aramdillo, and the
+`system_data.pik` file which defines the scene geometry. Each scene folder contains transients from the 
+scene using rendered with our [ToF renderer](https://github.com/juhyeonkim95/MitsubaPyOptiXTransient). We simulate sonar
+measurements by convolving transients with the sonar transmit waveform. Finally, the folder contains a `gt_meshes` folder used for evaluation. 
 
-The link points to 8 simulated scenes: bunny, xyz_dragon, lucy, dragon, buddha, and aramdillo.
-In particular, each folder contains rendered transients from the scene using our ToF renderer. We will
-convolve these transients with the sonar waveform to simulate measurements.
+We provide an example for reconstructing the buddha object in `scenes/simulated/buddha`. 
 
-Additionally, the folder contains a `gt_meshes` folder used for evaluation. 
+### Reconstruction Steps
 
-We provide an example for reconstructing the buddha object in `scenes/simulated/buddha`. To run this scene:
+Install [Pytorch3D](https://github.com/facebookresearch/pytorch3d) with the following commands
+```
+conda install -c fvcore -c iopath -c conda-forge fvcore iopath
+pip install "git+https://github.com/facebookresearch/pytorch3d.git"
+```
 
-1) Download the `buddha/data_full.npy` file from the link above.
-2) We first will simulate sonar waveforms using the scripts within `scenes/simulated/buddha`. 
-In `simulate_waveforms.sh`, point `--input_config` to the path of the `system_data.pik` file downloaded from the 
-google drive link. This pickle file contains the scene configuration and is used for all simulated scenes. Additionally, 
-point the `--wfm_part_1` argument to the transients file `buddha/data_full.npy`. This script will create a new system_data 
-pickle file that will contain the simulated measurements. Define this new file using the `--output_config` argument 
-(currently it is set to `system_data_20db.pik`).
-3) Use `chmod +x simulated_waveforms.sh` to make the script executable, and then run with `./simulated_waveforms.sh`. 
-The simulated measurements will be generated into the new system data pickle file defined by `--output_config`.
-4) Next we deconvolve the measurements using the `pulse_deconvolve.sh` script. Pass in the new system data pickle file 
-containing the simulated measurements to `--system_data`. Deconvolved measurements will be written to the `--output_dir`.
-5) Now we reconstruct the scene from deconvolved measurements using `neural_backproject.sh`. Once again, pass in the new 
-system data pickle file containing the simulated measurements to `--system_data`. All other parameters are set to those 
-used for the paper result. Results and reconstructions will be sent to `--output_dir`
+Simulate the sonar waveforms from the transients:
+
+```
+cd <project-dir>/scenes/simulated/buddha
+chmod +x simulate_waveforms.sh
+./simulate_waveforms <path-to-downloaded-simulated-data>/system_data.pik <path-to-downloaded-simulated-data>/buddha/data_full.npy
+```
+
+Deconvolve the simulated waveforms using:
+
+```
+chmod +x pulse_deconvolve.sh
+./pulse_deconvolve.sh system_data_20db.pik
+```
+
+Reconstruct the scene with
+
+```
+chmod +x neural_backproject.sh
+./neural_backproject.sh
+```
+
+Note that the `simulate_waveforms.sh` contains other commented parameters that can be modified, and are
+currently configured for the paper results.
 
 ### Metric Evaluation and Mesh Visualization
 We provide code for computing metrics of simulated reconstructions in the `evaluate` folder.
-1) First, generate the ground truth point cloud on surface or volume by running `main_generate_gt_point_cloud.sh`.
-2) Run `main_mesh_recon_and_3d_space_loss.sh`. This will reconstruct 3d mesh from learned model and also calculate 
-following 3d space loss from given point cloud.
 
-Here, the point cloud is generated in two ways, directly from INR voxels (comp_albedo), or from reconstructed 3D mesh. 
+Generate the ground truth point cloud on surface or volume by running
+```
+cd <project-dir>/evaluate
+chmod +x main_generate_gt_point_cloud.sh
+./main_generate_gt_point_cloud <path-to-gt-buddha.obj>
+```
+If the process is killed (perhaps because of an out of memory error), try reducing the `gt_n_points` and `gt_n_points_volume` arguments of sampled points in the `main_generate_gt_point_cloud.sh`. Note that this may result 
+in different quantitative results than the paper. 
 
+Reconstruct 3d mesh from learned model and also calculate the 3d space loss from given point cloud.
+```
+python main_mesh_recon_and_3d_space_loss.py \
+   --output_dir <choose-output-dir> \
+   --system_data_path ../scenes/simulated/buddha/system_data_20db.pik \
+   --expname sim_buddha_20db_20k_1 \
+   --mesh_name budda \
+   --comp_albedo_path ../scenes/simulated/buddha/nbp_output/<expname>/numpy/comp_albedo100000.npy \
+   --csv_file_name buddha \
+   --gt_mesh_dir <path-to-downloaded-gt-mesh-folder> \
+   --thresh 0.2
+```
+The point cloud is generated in two ways, directly from INR voxels (comp_albedo), or from reconstructed 3D mesh. 
 
+We compute the following metrics
 
 - Surface Chamfer Distance : Chamfer distance based on surface point cloud.
 - Volume Chamfer Distance : Chamfer distance based on volume point cloud.
 - IoU : Intersection over union using between two voxels built from point cloud.
 
+Install a few more packages used for rendering:
+```
+pip install PyWavefront
+pip install pyrender
+pip install pyrr
+pip install lpips
+```
 
-3) Then, run `main_render.sh` to render reconstructed mesh. This will render color, normal and depth image using 
-reconstructed mesh, at different camera azimuths.
+Render the reconstructed mesh's color, normal, and depth at different camera azimuths using:
+```
+python main_render.py \
+  --n_azimuth 10 \
+  --mesh_name budda \
+  --expname sim_buddha_20db_20k_1 \
+  --render_output_dir ../render_output \
+  --gt_mesh_dir <path-to-downloaded-gt-mesh-folder> \
+  --recon_mesh_dir <output-dir-from-previous-step> \
+  --thresh 0.2 \
+  --elevation 0.1 \
+  --distance 0.3 \
+  --fov 60
+```
+
 4) Finally run `main_image_space_loss.sh` to calculate image space loss (lpips, psnr, mse...) on color image or depth image.
 
 Example configurations are provided in `.sh` files, but please make sure to set it corresponding to your environment.

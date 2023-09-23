@@ -2,7 +2,6 @@ import argparse
 import pickle
 import constants as c
 import os
-from utils import resample_cylindrical
 import glob
 import scipy.io
 import matplotlib.pyplot as plt
@@ -12,6 +11,7 @@ from beamformer import backproject_all_airsas_measurements
 import torch
 from sas_utils import interpfft
 from tqdm import tqdm
+
 
 def create_voxels(x_min, x_max, y_min, y_max, z_min, z_max, num_x, num_y, num_z):
     scene_corners = np.array(([x_min, y_min, z_min],
@@ -32,7 +32,7 @@ def create_voxels(x_min, x_max, y_min, y_max, z_min, z_max, num_x, num_y, num_z)
     voxels = np.hstack((np.reshape(x, (np.size(x), 1)),
                         np.reshape(y, (np.size(y), 1)),
                         np.reshape(z, (np.size(z), 1))
-                       ))
+                        ))
 
     return {
         c.CORNERS: scene_corners,
@@ -66,18 +66,9 @@ if __name__ == '__main__':
                         default=20)
     parser.add_argument('--wfm_part_1', required=True)
     parser.add_argument('--wfm_part_2', required=False, default=None)
+    parser.add_argument('--max_bounce', required=False, default=2)
     parser.add_argument('--wfm_bw', required=True, help="Waveform bandwidth (5, 10, or 20)")
-    parser.add_argument('--resample_measurements', required=False, default=None,
-                        type=str, help="Whether to resample cylindrical measurements")
-    parser.add_argument('--pitch_levels', default=20, type=float, help="Pitch of helix. This is the number"
-                                                                       "of vertical z steps to take for every "
-                                                                       "rotation.")
-    parser.add_argument('--skip_every_n', default=4, type=int, help="Skip every --skip_every_n measurements to "
-                                                                    "for sparse view resampling. ")
     args = parser.parse_args()
-
-    if args.resample_measurements is not None:
-        assert args.resample_measurements in [c.HELIX, c.SPARSE]
 
     if args.object is not None:
         assert args.object in ['cube']
@@ -99,45 +90,8 @@ if __name__ == '__main__':
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir, exist_ok=True)
 
-    print(args.skip_every_n)
-
-    #tx_coords = system_data[c.TX_COORDS]
-    #rx_coords = system_data[c.RX_COORDS]
-
-    #fig = plt.figure()
-    #ax = fig.add_subplot(projection='3d')
-    #ax.scatter(system_data[c.TX_COORDS][..., 0],
-    #           system_data[c.TX_COORDS][..., 1],
-    #           system_data[c.TX_COORDS][..., 2], label='TX', alpha=0.1)
-    #plt.savefig(os.path.join(args.output_dir, 'debug_tx_before.png'))
-
-    if args.resample_measurements is not None:
-        print("Resampling measurements")
-        resample_indeces = resample_cylindrical(system_data[c.TX_COORDS],
-                                                resample_type=args.resample_measurements,
-                                                pitch_levels=args.pitch_levels,
-                                                skip_every_n=args.skip_every_n)
-
-        print("INDECES_SHAPE", resample_indeces.shape)
-
-        fig = plt.figure()
-        ax = fig.add_subplot(projection='3d')
-        ax.scatter(system_data[c.TX_COORDS][..., 0],
-                   system_data[c.TX_COORDS][..., 1],
-                   system_data[c.TX_COORDS][..., 2], label='TX Orig', alpha=0.01)
-        ax.scatter(system_data[c.TX_COORDS][resample_indeces, 0],
-                   system_data[c.TX_COORDS][resample_indeces, 1],
-                   system_data[c.TX_COORDS][resample_indeces, 2], label='TX Resampled', alpha=0.5)
-        plt.legend()
-        plt.savefig(os.path.join(args.output_dir, 'resampled.png'))
-
-        print("Original number of coordinates", system_data[c.TX_COORDS].shape)
-
-        system_data[c.TX_COORDS] = system_data[c.TX_COORDS][resample_indeces, :]
-        system_data[c.RX_COORDS] = system_data[c.RX_COORDS][resample_indeces, :]
-
-        print("Resampled coordinates", system_data[c.TX_COORDS].shape)
-
+    tx_coords = system_data[c.TX_COORDS]
+    rx_coords = system_data[c.RX_COORDS]
     wfm_crop_settings = system_data[c.WFM_CROP_SETTINGS]
 
     NUM_X = system_data[c.GEOMETRY][c.NUM_X]
@@ -182,11 +136,13 @@ if __name__ == '__main__':
         kernel_no_rc = \
             no_rc_kernel_from_waveform(system_data[c.WFM], wfm_crop_settings[c.NUM_SAMPLES]).detach().cpu().numpy()
     else:
-        tx_up = scipy.signal.resample(system_data[c.WFM], system_data[c.WFM].shape[0]*args.bin_upsample)
+        tx_up = scipy.signal.resample(system_data[c.WFM], system_data[c.WFM].shape[0] * args.bin_upsample)
 
-        kernel = kernel_from_waveform(tx_up, wfm_crop_settings[c.NUM_SAMPLES]*args.bin_upsample).detach().cpu().numpy()
+        kernel = kernel_from_waveform(tx_up,
+                                      wfm_crop_settings[c.NUM_SAMPLES] * args.bin_upsample).detach().cpu().numpy()
         kernel_no_rc = \
-            no_rc_kernel_from_waveform(tx_up, wfm_crop_settings[c.NUM_SAMPLES]*args.bin_upsample).detach().cpu().numpy()
+            no_rc_kernel_from_waveform(tx_up,
+                                       wfm_crop_settings[c.NUM_SAMPLES] * args.bin_upsample).detach().cpu().numpy()
 
     data_rc = []
     data_orig = []
@@ -196,7 +152,7 @@ if __name__ == '__main__':
         wfms1 = np.load('/data/sjayasur/awreed/airsas_data/cube_render_data/part_0_2.npy')
         wfms2 = np.load('/data/sjayasur/awreed/airsas_data/cube_render_data/part_1_2.npy')
         wfms = np.concatenate((wfms1, wfms2), axis=0)
-        wfms = wfms / (2048**2)
+        wfms = wfms / (2048 ** 2)
     else:
         print("loading part 1")
         wfms = np.load(args.wfm_part_1)
@@ -204,10 +160,12 @@ if __name__ == '__main__':
             print("loading part 2")
             wfms2 = np.load(args.wfm_part_2)
             wfms = np.concatenate((wfms, wfms2), axis=0)
+            wfms = wfms / (2048 ** 2)
 
-        wfms = wfms / (2048 ** 2)
+        wfms = np.sum(wfms[..., 0: min(int(args.max_bounce), wfm.shape[-1])], axis=-1)
 
     print("Loaded waveforms with shape", wfms.shape)
+    print("Max bounce", args.max_bounce)
 
     # If need to resize the rendered waveform
     # This is the old GEO
@@ -215,8 +173,8 @@ if __name__ == '__main__':
         geo = create_voxels(-.1, .1, -.1, .1, 0, .3, 75, 75, 75)
         corners_old = geo[c.CORNERS]
         wfm_length = system_data[c.WFM_PARAMS][c.T_DUR] * system_data[c.SYS_PARAMS][c.FS]
-        wfm_crop_settings_old = crop_wfm(system_data[c.TX_COORDS],
-                                         system_data[c.RX_COORDS],
+        wfm_crop_settings_old = crop_wfm(tx_coords,
+                                         rx_coords,
                                          corners_old,
                                          wfm_length,
                                          system_data[c.SYS_PARAMS][c.FS],
@@ -224,12 +182,9 @@ if __name__ == '__main__':
 
         wfms_old = np.zeros((wfms.shape[0], 1000))
         wfms_old[:, wfm_crop_settings_old['min_sample']:
-                    wfm_crop_settings_old['min_sample']+wfm_crop_settings_old['num_samples']] = wfms
-        wfms = wfms_old[:, wfm_crop_settings['min_sample']:wfm_crop_settings['min_sample']+wfm_crop_settings['num_samples']]
-
-    if args.resample_measurements is not None:
-        wfms = wfms[resample_indeces, :]
-        print("Resampled waveforms to shape", wfms.shape)
+                    wfm_crop_settings_old['min_sample'] + wfm_crop_settings_old['num_samples']] = wfms
+        wfms = wfms_old[:,
+               wfm_crop_settings['min_sample']:wfm_crop_settings['min_sample'] + wfm_crop_settings['num_samples']]
 
     data_rc = []
     data_no_rc = []
@@ -252,7 +207,7 @@ if __name__ == '__main__':
 
     del wfms
     print("stacking...")
-    #data_rc = np.stack((data_rc))
+    # data_rc = np.stack((data_rc))
     data_no_rc = np.stack((data_no_rc))
 
     if args.signal_snr is not None:
@@ -261,7 +216,7 @@ if __name__ == '__main__':
         plt.plot(data_no_rc[0, :])
         plt.savefig(os.path.join(args.output_dir, 'before_noise.png'))
 
-        data_avg_watts = np.mean(data_no_rc[data_no_rc > 1e-6]**2)
+        data_avg_watts = np.mean(data_no_rc[data_no_rc > 1e-6] ** 2)
         data_avg_db = 10 * np.log10(data_avg_watts)
         noise_avg_db = data_avg_db - float(args.signal_snr)
         noise_avg_watts = 10 ** (noise_avg_db / 10)
@@ -273,7 +228,7 @@ if __name__ == '__main__':
         plt.plot(data_no_rc[0, :])
         plt.savefig(os.path.join(args.output_dir, 'after_noise.png'))
 
-    #system_data[c.WFM_RC] = data_rc
+    # system_data[c.WFM_RC] = data_rc
     system_data[c.WFM_DATA] = data_no_rc
 
     print("Computing match filtered waveforms from scratch...")
@@ -283,12 +238,12 @@ if __name__ == '__main__':
 
     # Overrwrite the system data with new wfms
     with open(args.output_config, 'wb') as handle:
-        pickle.dump(system_data, handle)
+        system_data = pickle.dump(system_data, handle)
 
     print("Backprojecting scene from scratch...")
 
-    scene = backproject_all_airsas_measurements(tx_pos=system_data[c.TX_COORDS],
-                                                rx_pos=system_data[c.RX_COORDS],
+    scene = backproject_all_airsas_measurements(tx_pos=tx_coords,
+                                                rx_pos=rx_coords,
                                                 voxels=voxels,
                                                 measurements=data_rc_new,
                                                 speed_of_sound=speed_of_sound,
@@ -306,10 +261,6 @@ if __name__ == '__main__':
 
     scene = np.reshape(scene, (int(NUM_X),
                                int(NUM_Y),
-                               int(NUM_Z)))#
+                               int(NUM_Z)))  #
 
     np.save(os.path.join(args.output_dir, c.BF_FILE), scene)
-
-
-
-
