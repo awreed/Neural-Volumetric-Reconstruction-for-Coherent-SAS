@@ -9,6 +9,13 @@ by Albert W. Reed, Juhyeon Kim, Thomas Blanford, Adithya Pediredla, Daniel C. Br
 
 
 # Installation
+## Clone the repo
+
+```
+git clone https://github.com/awreed/Neural-Volumetric-Reconstruction-for-Coherent-SAS
+cd Neural-Volumetric-Reconstruction-for-Coherent-SAS
+```
+
 ## Create the environment
 
 Use the following commands for setting up the code environment. These commands were tested in a Linux 
@@ -42,8 +49,6 @@ pip install ninja git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindi
 ## Install the Project
 
 ```
-git clone https://github.com/awreed/Neural-Volumetric-Reconstruction-for-Coherent-SAS
-cd Neural-Volumetric-Reconstruction-for-Coherent-SAS
 pip install -e .
 ```
 
