@@ -692,7 +692,9 @@ if __name__ == '__main__':
                 plt.savefig(os.path.join(basedir, c.IMAGES, 'sigma_est' + str(global_step) + '.png'))
                 plt.close('all')
 
+            print("ARGS MAX VOXELS IS:", args.max_voxels)
             with torch.no_grad():
+
                 if args.max_voxels is not None:
                     chunks = divide_chunks(list(range(0, all_scene_coords.shape[0])), args.max_voxels)
 
