@@ -79,6 +79,8 @@ def config_parser():
                         help="Whether to flip z dimension (check if this was done for neural_backprojection.sh")
     parser.add_argument('--permute_xy', required=False, default=False, action='store_true',
                         help="Flip xy axis. Should be used for the SVSS data")
+    parser.add_argument('--max_voxels', required=False, default=None, type=int, help="Max number of voxels to query"
+                                                                                       "reduce if OOM")
     return parser
 
 if __name__ == '__main__':
@@ -119,7 +121,7 @@ if __name__ == '__main__':
     real_only = False
     normalize_scene_dims = args.normalize_scene_dims
     compute_normals=False
-    max_voxels = 1500000
+    #max_voxels = 15000
 
     x_min=system_data[c.GEOMETRY][c.CORNERS][:, 0].min()
     x_max=system_data[c.GEOMETRY][c.CORNERS][:, 0].max()
@@ -173,8 +175,8 @@ if __name__ == '__main__':
 
     scene_model.load_state_dict(ckpt['network_fn_state_dict'])
 
-    if max_voxels is not None:
-        chunks = divide_chunks(list(range(0, all_scene_coords.shape[0])), max_voxels)
+    if args.max_voxels is not None:
+        chunks = divide_chunks(list(range(0, all_scene_coords.shape[0])), args.max_voxels)
 
         comp_albedo = np.zeros((all_scene_coords.shape[0]), dtype=complex)
         normal = np.zeros((all_scene_coords.shape[0], 3))

@@ -5,7 +5,7 @@
       <paths name="SOL">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/awreed/neural-vol-sas" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/home/awreed/Neural-Volume-Reconstruction-for-Coherent-SAS" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
