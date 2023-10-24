@@ -695,27 +695,27 @@ if __name__ == '__main__':
             print("ARGS MAX VOXELS IS:", args.max_voxels)
             with torch.no_grad():
 
-                if args.max_voxels is not None:
-                    chunks = divide_chunks(list(range(0, all_scene_coords.shape[0])), args.max_voxels)
+                #if args.max_voxels is not None:
+                chunks = divide_chunks(list(range(0, all_scene_coords.shape[0])), args.max_voxels)
 
-                    comp_albedo = torch.zeros((all_scene_coords.shape[0]), dtype=torch.complex64)
-                    normal = torch.zeros((all_scene_coords.shape[0], 3))
-                    for chunk in tqdm(chunks, desc="Querying network for full scene..."):
-                        scene_chunk = all_scene_coords[chunk, :]
-                        with torch.no_grad():
-                            model_out = scene_model(coords_to=scene_chunk.cuda(),
-                                        compute_normals=compute_normals)
+                comp_albedo = torch.zeros((all_scene_coords.shape[0]), dtype=torch.complex64)
+                normal = torch.zeros((all_scene_coords.shape[0], 3))
+                for chunk in tqdm(chunks, desc="Querying network for full scene..."):
+                    scene_chunk = all_scene_coords[chunk, :]
+                    with torch.no_grad():
+                        model_out = scene_model(coords_to=scene_chunk.cuda(),
+                                    compute_normals=compute_normals)
 
-                        comp_albedo[chunk] = model_out['scatterers_to']
+                    comp_albedo[chunk] = model_out['scatterers_to']
 
-                        if compute_normals:
-                            normal[chunk, :] = model_out['normals']
-                        del scene_chunk
-                else:
-                    model_out = scene_model(coords_to=all_scene_coords.cuda(),
-                                            compute_normals=compute_normals)
-                    comp_albedo = model_out['scatterers_to']
-                    normal = model_out['normals']
+                    if compute_normals:
+                        normal[chunk, :] = model_out['normals']
+                    del scene_chunk
+               # else:
+               #     model_out = scene_model(coords_to=all_scene_coords.cuda(),
+               #                             compute_normals=compute_normals)
+               #     comp_albedo = model_out['scatterers_to']
+               #     normal = model_out['normals']
 
             print("Albedo min and max", comp_albedo.abs().min().item(), comp_albedo.abs().max().item())
 

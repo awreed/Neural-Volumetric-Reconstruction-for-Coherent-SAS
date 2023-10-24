@@ -120,7 +120,7 @@ def config_parser():
     parser.add_argument('--export_model_every', required=False, default=5000, type=int,
                         help="When to export model")
     parser.add_argument('--expname', required=False, default=None, help='Experiment name')
-    parser.add_argument('--max_voxels', required=False, type=int, default=None, help="Max number of scene voxels to feed"
+    parser.add_argument('--max_voxels', required=False, type=int, default=15000, help="Max number of scene voxels to feed"
                                                                               "network. Set lower if OOM")
     parser.add_argument('--no_factor_4', required=False, action='store_true')
     return parser
