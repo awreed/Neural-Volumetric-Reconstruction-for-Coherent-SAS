@@ -69,9 +69,10 @@ with numpy/pytorch. This data structure is called a `system_data.pik` file, whic
 is a [pickled](https://docs.python.org/3/library/pickle.html) python [dictionary](https://docs.python.org/3/tutorial/datastructures.html#dictionaries). At a high level, each scene has its own `system_data.pik` file (see **Download the Data** below) 
 which contains everything needed for reconstruction: the measurements, scene geometry, and other metadata (e.g., sound speed). 
 
+
 Download the airsas measurements for the bunny and armadillo:
 ```
-gdown https://drive.google.com/uc?id=1mzJx_tesC3XDtUcnjrUvn11N2z8NuXE
+gdown https://drive.google.com/uc?id=1mzJx_tesC3XDtUcnjrUvn11N2z8NuXEv
 ```
 Unzip them using unzip or 7z:
 ```
