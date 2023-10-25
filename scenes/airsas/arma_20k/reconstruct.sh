@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo $1
+echo $2
+
 echo "Starting reconstructing using backprojection (the conventional method)"
 python ../../../airsas/reconstruct_from_system_file.py \
   --orig_system_file $1 \
