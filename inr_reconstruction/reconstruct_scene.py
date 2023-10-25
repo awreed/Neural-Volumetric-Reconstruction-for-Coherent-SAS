@@ -71,6 +71,7 @@ if __name__ == '__main__':
         # make directories for output
         expname = args.expname
         if expname is None:
+            raise OSError("Failed to read the --expname argument")
             expname = os.getcwd()
             expname = expname.split("/")[-1]
         basedir = os.path.join(args.output_dir, expname)
