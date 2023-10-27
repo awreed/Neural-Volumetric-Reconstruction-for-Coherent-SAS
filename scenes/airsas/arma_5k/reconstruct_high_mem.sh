@@ -8,6 +8,7 @@ python ../../../airsas/reconstruct_from_system_file.py \
   --interpolation_factor 5 `#Upsample factor for nearest neighbor backprojection interpolation` \
   --gpu `#Run on GPU if possible` \
 
+echo "Starting pulse deconvolution (reconstruction step 1/2 of our method)"
 
 python ../../../inr_reconstruction/deconvolve_measurements.py \
   --inr_config ./pulse_deconvolve.json \
@@ -18,9 +19,11 @@ python ../../../inr_reconstruction/deconvolve_measurements.py \
   --num_trans_per_inr 360 \
   --number_iterations 1000 \
   --info_every 999 \
-  --sparsity 1e-2 \
+  --sparsity 1e-1 \
   --load_wfm ../../../data/wfm/5khz_bw_lfm.npy \
   --phase_loss 1e-4 \
+
+echo "Starting neural backprojection (reconstruction step 2/2 of our method)"
 
 python ../../../inr_reconstruction/reconstruct_scene.py \
   --scene_inr_config ./nbp_config.json \
@@ -52,10 +55,9 @@ python ../../../inr_reconstruction/reconstruct_scene.py \
   --transmit_from_tx \
   --normalize_scene_dims \
   --expname $2 `# the experiment name`\
-  --no_reload \
   --beamwidth 30 \
   --phase_loss 1e-1 \
-
+  --max_voxels 15000
 
 echo "Sampling network for scene exporting scene *.mat file"
 python ../../../inr_reconstruction/upsample_network_with_input_args.py \
@@ -63,4 +65,8 @@ python ../../../inr_reconstruction/upsample_network_with_input_args.py \
   --experiment_dir ./ `# experiment directory` \
   --inr_config ./nbp_config.json `# json file containing network configuration` \
   --output_scene_file_name final_upsampled_scene \
-  --output_dir_name reconstructed_scenes
+  --output_dir_name reconstructed_scenes \
+  --system_data $1 \
+  --normalize_scene_dims \
+  --sf 2 \
+  --max_voxels 15000

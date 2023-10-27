@@ -9,6 +9,28 @@ by Albert W. Reed, Juhyeon Kim, Thomas Blanford, Adithya Pediredla, Daniel C. Br
 
 
 # Installation
+
+## System Requirements
+
+### GPU Requirements
+
+
+We have tested the code on an A100 GPU, 3080 GPU, and 3090 TI GPU. The GPU will need at least 7GB of VRAM. We provide 
+scripts for reconstructing the scenes with low and higher memory settings (see section *Reconstruct the armadillo using backprojection and our method* for more details).
+
+### QT Library
+
+Some of the code uses QT libraries which require the `libxcb-cursor0` to be installed via:
+
+```
+sudo apt-get update -y
+sudo apt-get install -y libxcb-cursor0
+```
+
+### Matlab 
+In the paper, we render the reconstruct results using Matlab. The matlab scripts in this repo were tested 
+on Matlab 2023b. Some of the syntax may not be compatible with older Matlab versions. 
+
 ## Clone the repo
 
 ```
@@ -158,12 +180,19 @@ geometry and measurements necessary for reconstruction.
 
 ## Reconstruct the armadillo using backprojection and our method
 
+### GPU Memory Requirements
+We provide two reconstruction scripts for each AirSAS scene, one compatible for GPUs < 10GB and the other for GPUs > 20GB. 
+These are titled `reconstruct_low_mem.sh` and `reconstruct_high_mem.sh`, respectively. We have tested the `reconstruct_low_mem.sh` script on a 3080 GPU,
+and the `reconstrct_high_mem.sh` on an A100. Note that we use `reconstruct_high_mem.sh` for the paper results. GPU usage 
+can be further reduced by lowering the `max_weights` in `reconstruct_low_mem.sh`, but results may be worse. 
+
+
 We will describe how to reconstruct the armadillo object measured with the 20kHz waveform. Note that `reconstruct.sh`
 contains many hyperparameters that can be changed. Currently, they are set to the parameters used in the paper. 
 
 ```
 cd ./scenes/airsas/arma_20k
-chmod +x reconstruct.sh
+chmod +x reconstruct_low_mem.sh # or reconstruct_high_mem.sh if GPU has enough VRAM
 ./reconstruct.sh <path/to/system_data_arma_20k.pik> <pick-an-experiment-name>
 ```
 
