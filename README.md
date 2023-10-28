@@ -184,7 +184,7 @@ geometry and measurements necessary for reconstruction.
 We provide two reconstruction scripts for each AirSAS scene, one compatible for GPUs < 10GB and the other for GPUs > 20GB. 
 These are titled `reconstruct_low_mem.sh` and `reconstruct_high_mem.sh`, respectively. We have tested the `reconstruct_low_mem.sh` script on a 3080 GPU,
 and the `reconstrct_high_mem.sh` on an A100. Note that we use `reconstruct_high_mem.sh` for the paper results. GPU usage 
-can be further reduced by lowering the `max_weights` in `reconstruct_low_mem.sh`, but results may be worse. 
+can be further reduced by lowering the `max_weights` in `reconstruct_low_mem.sh`, but reconstruction quality may be worse. 
 
 
 We will describe how to reconstruct the armadillo object measured with the 20kHz waveform. Note that `reconstruct.sh`
@@ -193,7 +193,7 @@ contains many hyperparameters that can be changed. Currently, they are set to th
 ```
 cd ./scenes/airsas/arma_20k
 chmod +x reconstruct_low_mem.sh # or reconstruct_high_mem.sh if GPU has enough VRAM
-./reconstruct.sh <path/to/system_data_arma_20k.pik> <pick-an-experiment-name>
+./reconstruct_low_mem.sh <path/to/system_data_arma_20k.pik> <pick-an-experiment-name>
 ```
 
 Successfully running the above will generate a new directory `reconstructed_scenes/` populated with the backprojection result and our result:
